@@ -14,16 +14,9 @@ Gérez les convocations de vos joueurs à une rencontre sportive
 
 Convocations est un plugin pour les clubs sportifs souhaitant gérer et afficher sur leur site la liste des joueurs convoqués à un match.
 Fonctionnalités de Convocations :
- - Créer et gérer des équipes
- - Créer et gérer des joueurs
- - Gérer les matchs en configurant plusieurs paramètres :
-	- Equipe adverse
-	- Date de la rencontre
-	- Type de la rencontre : Domicile ou Extérieur
-	- Lieu du RDV
-	- Heure du RDV
-	- Heure du match
-	- Liste des joueurs convoqués pour le match
+* Créer et gérer des équipes
+* Créer et gérer des joueurs
+* Gérer les matchs en configurant plusieurs paramètres (Equipe adverse, Date de la rencontre, Type de la rencontre : Domicile ou Extérieur, Lieu du RDV, Heure du RDV, Heure du match, Liste des joueurs convoqués pour le match)
 
 == Installation ==
 
