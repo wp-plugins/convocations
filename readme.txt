@@ -20,9 +20,9 @@ Fonctionnalités de Convocations :
 
 == Installation ==
 
-1. Extract `convocations.zip` and upload the folder `convocations` to the `/wp-content/plugins/` directory;
-2. Activate the plugin through the `Plugins` menu in WordPress
-3. Place this `<?php if (function_exists('displayConvocations')) { displayConvocations(); } ?>` in your templates
+1. Extraire `convocations.zip` et uploader le dossier `convocations` dans le dossier `/wp-content/plugins/`
+2. Activer le plugin dans le menu "Extensions" de WordPress
+3. Placer ce code `<?php if (function_exists('displayConvocations')) { displayConvocations(); } ?>` dans le template.
 
 == Frequently Asked Questions ==
 
