@@ -32,8 +32,8 @@ if(!class_exists("Convocations"))
 		function addScripts()
 		{
 			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-core', CONVOCATIONS_URL . '/js/jquery.ui.core.js' );
-			wp_enqueue_script( 'jquery-ui-datepicker', CONVOCATIONS_URL . '/js/jquery.ui.datepicker.js', array( 'jquery', 'jquery-ui-core' ) );
+			wp_enqueue_script( 'jquery-ui-core' );
+			wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery', 'jquery-ui-core' ) );
 			wp_enqueue_style( 'jquery.ui.theme', CONVOCATIONS_URL . '/css/jquery-ui-1.8.23.custom.css' );
 		}
 		
