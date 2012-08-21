@@ -33,7 +33,9 @@ Fonctionnalités de Convocations :
 
 == Frequently Asked Questions ==
 
-Aucune question pour le moment
+= Comment créer une nouvelle convocation =
+
+Les convocations sont liées aux équipes. Il est donc nécessaire de créer une équipe en premier lieu. Une fois l'équipe créée, retournez sur le panneau d'administration `Convocations`. Une nouvelle convocation a été créée.
 
 == Screenshots ==
 
