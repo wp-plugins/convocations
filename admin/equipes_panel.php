@@ -8,10 +8,15 @@
 		
 		// Si on passe en mode "Sauvegarde"
 		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
-			$nom = $_POST['nom'];
-			$responsable = $_POST['responsable'];
-			$telephone = $_POST['telephone'];
-			$entrainement = $_POST['entrainement'];
+			$nom = '';
+			$responsable = '';
+			$telephone = '';
+			$entrainement = '';
+			
+			if( isset( $_POST['nom'] ) ){ $nom = $_POST['nom']; }
+			if( isset( $_POST['responsable'] ) ){ $responsable = $_POST['responsable']; }
+			if( isset( $_POST['telephone'] ) ){ $telephone = $_POST['telephone']; }
+			if( isset( $_POST['entrainement'] ) ){ $entrainement = $_POST['entrainement']; }
 			
 			// Si on ajoute une nouvelle équipe
 			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) ){
@@ -20,7 +25,7 @@
 				// Si l'insertion des données à réussi, on retourne au listing des équipes et on affiche un message de succès
 				if( $insert ) {
 					$equipes = $inst_convocations->getAllEquipes();
-					$this.afficheAdminEquipes( $equipes );
+					afficheAdminEquipes( $equipes );
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -30,7 +35,7 @@
 				} 
 				// Sinon on affiche une erreur
 				else {
-					$this.afficheAddEquipe();
+					afficheAddEquipe();
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -42,13 +47,14 @@
 			
 			// Si on édite une équipe existante
 			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) ){
-				$id = $_POST['id'];
+				$id = '';
+				if( isset( $_POST['id'] ) ){ $id = $_POST['id']; }
 				$old_name = $_POST['old_name'];
 				
 				$inst_convocations->updateEquipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement );
 				
 				$equipes = $inst_convocations->getAllEquipes();
-				$this.afficheAdminEquipes( $equipes );
+				afficheAdminEquipes( $equipes );
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -61,22 +67,22 @@
 		}
 		// Si on veut procéder à l'ajout d'une équipe
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) {
-			$this.afficheAddEquipe();
+			afficheAddEquipe();
 		}
 		// Si on veut procéder à la modification d'une équipe
 		elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )  {
 			$equipe = $inst_convocations->getEquipe( $_GET['id'] );
-			$this.afficheEditEquipe( $equipe );
+			afficheEditEquipe( $equipe );
 		}
 		// Si on veut procéder à la suppression d'une équipe
-		elseif ( $_GET['action'] && $_GET['action'] == 'del' ) {
+		elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'del' ) {
 			$id = $_GET['id'];
 			$equipe = $_GET['equipe'];
 			$inst_convocations->deleteEquipe( $id );
 			$inst_convocations->deleteConvocation( $equipe );
 			
 			$equipes = $inst_convocations->getAllEquipes();
-			$this.afficheAdminEquipes( $equipes );
+			afficheAdminEquipes( $equipes );
 			echo '
 				<script type="text/javascript">
 					document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -86,7 +92,7 @@
 		}
 		else {
 			$equipes = $inst_convocations->getAllEquipes();
-			$this.afficheAdminEquipes( $equipes );
+			afficheAdminEquipes( $equipes );
 		}
 	}
 	

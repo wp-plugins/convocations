@@ -21,7 +21,7 @@
 				if( $insert ) {
 					$equipes = $inst_convocations->getAllEquipes();
 					$joueurs = $inst_convocations->getAllJoueurs();
-					$this.afficheAdminJoueurs( $equipes, $joueurs );
+					afficheAdminJoueurs( $equipes, $joueurs );
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -32,7 +32,7 @@
 				// Sinon
 				else {
 					$joueurs = $inst_convocations->getAllJoueurs();
-					$this.afficheAddJoueur( $joueurs );
+					afficheAddJoueur( $joueurs );
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -50,7 +50,7 @@
 				
 				$equipes = $inst_convocations->getAllEquipes();
 				$joueurs = $inst_convocations->getAllJoueurs();
-				$this.afficheAdminJoueurs( $equipes, $joueurs );
+				afficheAdminJoueurs( $equipes, $joueurs );
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -62,13 +62,13 @@
 		// Si on veut procéder à l'ajout d'un joueur
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) {
 			$equipes = $inst_convocations->getAllEquipes();
-			$this.afficheAddJoueur( $equipes );
+			afficheAddJoueur( $equipes );
 		}
 		// Si on veut procéder à la modification d'un joueur
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )  {
 			$equipes = $inst_convocations->getAllEquipes();
 			$joueur = $inst_convocations->getJoueur( $_GET['id'] );
-			$this.afficheEditJoueur( $joueur, $equipes );
+			afficheEditJoueur( $joueur, $equipes );
 		}
 		// Si on veut procéder à la suppression d'un joueur
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'del' ) {
@@ -77,7 +77,7 @@
 			
 			$equipes = $inst_convocations->getAllEquipes();
 			$joueurs = $inst_convocations->getAllJoueurs();
-			$this.afficheAdminJoueurs( $equipes, $joueurs );
+			afficheAdminJoueurs( $equipes, $joueurs );
 			echo '
 				<script type="text/javascript">
 					document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -89,13 +89,13 @@
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'filtrer' && isset( $_GET['filtre-equipe'] ) && $_GET['filtre-equipe'] != 'toutes' ) {
 			$equipes = $inst_convocations->getAllEquipes();
 			$joueurs = $inst_convocations->getJoueursByEquipe( $_GET['filtre-equipe'] );
-			$this.afficheAdminJoueurs( $equipes, $joueurs );
+			afficheAdminJoueurs( $equipes, $joueurs );
 		}
 		// Sinon, on charge le listing de tous les joueurs
 		else {
 			$equipes = $inst_convocations->getAllEquipes();
 			$joueurs = $inst_convocations->getAllJoueurs();
-			$this.afficheAdminJoueurs( $equipes, $joueurs );
+			afficheAdminJoueurs( $equipes, $joueurs );
 		}
 	}
 	
@@ -119,8 +119,12 @@
 						<select name="filtre-equipe">
 							<option value="toutes">Toutes les équipes</option>';
 							foreach ( $equipes as $equipe ) {
-								if( $equipe->nom == $_GET['filtre-equipe'] ){
-									$html .= '<option value="'. $equipe->nom .'" selected>'. $equipe->nom .'</option>';
+								if( isset( $_GET['filtre-equipe'] ) )
+								{
+									if( $equipe->nom == $_GET['filtre-equipe'] )
+									{
+										$html .= '<option value="'. $equipe->nom .'" selected>'. $equipe->nom .'</option>';
+									}
 								}
 								else {
 									$html .= '<option value="'. $equipe->nom .'">'. $equipe->nom .'</option>';

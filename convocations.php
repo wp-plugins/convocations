@@ -338,7 +338,7 @@ if(!class_exists("Convocations"))
 								'
 								SELECT * 
 								FROM ' . $tableName . ' 
-								WHERE nom = %s"
+								WHERE nom = %s
 								',
 								$nom
 					);

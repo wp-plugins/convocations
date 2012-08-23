@@ -21,7 +21,7 @@
 				$inst_convocations->updateConvocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
 				
 				$convocations = $inst_convocations->getAllConvocations();
-				$this.afficheAdminConvocations( $convocations );
+				afficheAdminConvocations( $convocations );
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -34,13 +34,13 @@
 		{
 			$convocation = $inst_convocations->getConvocation( $_GET['id'] );
 			$joueurs = $inst_convocations->getAllJoueurs();
-			$this.afficheEditConvocation( $convocation, $joueurs );
+			afficheEditConvocation( $convocation, $joueurs );
 		}
 		// Affichage du listing des convocations
 		else
 		{
 			$convocations = $inst_convocations->getAllConvocations();
-			$this.afficheAdminConvocations( $convocations );
+			afficheAdminConvocations( $convocations );
 		}
 	}
 	
