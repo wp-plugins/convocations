@@ -4,7 +4,7 @@ Donate link: http://www.breizh-seo.com/
 Tags: convocation, sport
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,8 @@ Gérez les convocations de vos joueurs à une rencontre sportive
 == Description ==
 
 Convocations est un plugin pour les clubs sportifs souhaitant gérer et afficher sur leur site la liste des joueurs convoqués à un match.
-Fonctionnalités de Convocations :
+
+= Fonctionnalités =
 * Créer et gérer des équipes
 * Créer et gérer des joueurs
 * Gérer les matchs en configurant plusieurs paramètres (Equipe adverse, Date de la rencontre, Type de la rencontre : Domicile ou Extérieur, Lieu du RDV, Heure du RDV, Heure du match, Liste des joueurs convoqués pour le match)
@@ -38,3 +39,6 @@ Les convocations sont liées aux équipes. Il est donc nécessaire de créer une
 
 = 0.1 =
 * Première version du plugin
+
+= 0.2 =
+* Corrige des warnings et notices

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Convocations
 Description: Convocations est un plugin pour le clubs sportifs souhaitant gérer et afficher sur leur site la liste des joueurs convoqués à un match.
-Version: 0.1
+Version: 0.2
 Author: JC
 Author URI: http://www.breizh-seo.com/
 */
