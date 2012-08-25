@@ -15,18 +15,18 @@ if( isset( $_POST['lequipe'] ) && $_POST['lequipe'] != '') {
 	
 	$joueurs = $wpdb->get_results($sql_joueurs);
 	
-	setlocale(LC_TIME, "fr_FR", "fr_FR@euro", "fr", "FR", "fra_fra", "fra");
-	$html = '<p>';
-	$html .= 'Les joueurs de l\'équipe '. $joueurs[0]->equipe .' sont convoqués le ';
-	$html .= '<strong>'. utf8_encode(strftime("%A %d %B %Y", strtotime($joueurs[0]->date))) .'</strong> ';
-	$html .= 'à <strong>'. $joueurs[0]->heurerdv .'</strong><br />';
-	$html .= 'Le lieu du rendez-vous est : '. $joueurs[0]->lieurdv .'<br />';
-	$html .= 'Le match débutera à '. $joueurs[0]->heurematch .'';
-	$html .= '</p>';
-	$html .= '<h2>Liste des joueurs convoqués :</h2>';
-	$html .= '<p>';
-	
 	if( count( $joueurs ) != 0 ) {
+		
+		setlocale(LC_TIME, "fr_FR", "fr_FR@euro", "fr", "FR", "fra_fra", "fra");
+		$html = '<p>';
+		$html .= 'Les joueurs de l\'équipe '. $joueurs[0]->equipe .' sont convoqués le ';
+		$html .= '<strong>'. utf8_encode(strftime("%A %d %B %Y", strtotime($joueurs[0]->date))) .'</strong> ';
+		$html .= 'à <strong>'. $joueurs[0]->heurerdv .'</strong><br />';
+		$html .= 'Le lieu du rendez-vous est : '. $joueurs[0]->lieurdv .'<br />';
+		$html .= 'Le match débutera à '. $joueurs[0]->heurematch .'';
+		$html .= '</p>';
+		$html .= '<h2>Liste des joueurs convoqués :</h2>';
+		$html .= '<p>';
 		
 		foreach ( $joueurs as $joueur ) {
 			$html .= $joueur->nom .' '. ucfirst(strtolower($joueur->prenom)) .'<br>';
