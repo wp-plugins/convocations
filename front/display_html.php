@@ -56,6 +56,8 @@ function displayConvocations()
 	
 	$convocations = $wpdb->get_results($sql);
 	
+	$html = '';
+	
 	$html .= '
 	<script type="text/javascript">
 		function charge_joueurs() {
