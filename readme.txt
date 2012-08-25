@@ -14,7 +14,7 @@ Manage the notifications of your teams and of your players to matches.
 
 Convocations plugin is for sports associations such as football clubs, handball clubs, basket-ball clubs, ... which allows you to manage the notifications of your teams and of your players to matches.
 
-= Fonctionnalités =
+= Features =
 * Create and manage teams
 * Create and manage players
 * Manage games by configuring several parameters (Team opponent, Meeting Date, Type of meeting: Home or Away, Place of appointment, Time of appointment, Match Schedule, List of players convoked for the match)
