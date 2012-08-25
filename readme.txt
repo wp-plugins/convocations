@@ -4,7 +4,7 @@ Donate link: http://www.breizh-seo.com/
 Tags: convocation, sport
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 0.3
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,7 +48,13 @@ The notifications are related teams. It is therefore necessary to create a team 
 * Add a custom icon for the plugin menu
 * Insert the notion of class in the plugin (OOP) and the design patterns Singleton and MVC
 
+= 0.4 =
+* Fix a lot of bug in admin and in front-end
+
 == Upgrade Notice ==
 
 = 0.3 =
 Using shortocode to display in front-end !
+
+= 0.4 =
+A lot of bug are fixed !
