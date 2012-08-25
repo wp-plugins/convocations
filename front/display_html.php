@@ -1,14 +1,14 @@
 <?php
 if( isset( $_POST['lequipe'] ) && $_POST['lequipe'] != '') {
 	global $wpdb;
-	$tablename = $wpdb->prefix . 'convocations_joueurs';
+	$table_name = $wpdb->prefix . 'convocations_joueurs';
 	
 	$sql_joueurs = '
 			SELECT * 
-			FROM ' .$tablename. ' 
-			INNER JOIN stircl_convocations ON stircl_convocations.id = ' .$tablename. '.numconvocation 
-			WHERE ' .$tablename. '.numconvocation = '.$_POST['lequipe'].' 
-			ORDER BY ' .$tablename. '.nom ASC 
+			FROM ' .$table_name. ' 
+			INNER JOIN stircl_convocations ON stircl_convocations.id = ' .$table_name. '.numconvocation 
+			WHERE ' .$table_name. '.numconvocation = '.$_POST['lequipe'].' 
+			ORDER BY ' .$table_name. '.nom ASC 
 			';
 	$sql_joueurs = $wpdb->prepare($sql_joueurs);
 	

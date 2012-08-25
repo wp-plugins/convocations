@@ -1,27 +1,20 @@
 <?php
-	/**
-	* Fonction gérant l'affichage des différents panels de l'administration des joueurs
-	* @global inst_convocations
-	*/
-	function adminJoueurs() {
+	function admin_joueurs_panel(){
 		global $inst_convocations;
 		
-		// Si on passe en mode "Sauvegarde"
-		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
+		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' ){
 			$nom = $_POST['nom'];
 			$prenom = $_POST['prenom'];
 			$poste = $_POST['poste'];
 			$equipe = $_POST['equipe'];
 			
-			// Si c'est un ajout de joueur
 			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) ){
-				$insert = $inst_convocations->insertJoueur($nom, $prenom, $poste, $equipe);
+				$insert = $inst_convocations->insert_joueur( $nom, $prenom, $poste, $equipe );
 				
-				// Si l'insertion a réussie
 				if( $insert ) {
-					$equipes = $inst_convocations->getAllEquipes();
-					$joueurs = $inst_convocations->getAllJoueurs();
-					afficheAdminJoueurs( $equipes, $joueurs );
+					$equipes = $inst_convocations->get_all_equipes();
+					$joueurs = $inst_convocations->get_all_joueurs();
+					affiche_admin_joueurs( $equipes, $joueurs );
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -29,10 +22,9 @@
 						</script>
 						';
 				}
-				// Sinon
-				else {
-					$joueurs = $inst_convocations->getAllJoueurs();
-					afficheAddJoueur( $joueurs );
+				else{
+					$joueurs = $inst_convocations->get_all_joueurs();
+					affiche_add_joueur( $joueurs );
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -41,16 +33,14 @@
 						';
 				}
 			}
-			
-			// Si c'est une modification de joueur
-			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) ){
+			elseif( ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) ){
 				$id = $_POST['id'];
 				
-				$inst_convocations->updateJoueur( $id, $nom, $prenom, $poste, $equipe );
+				$inst_convocations->update_joueur( $id, $nom, $prenom, $poste, $equipe );
 				
-				$equipes = $inst_convocations->getAllEquipes();
-				$joueurs = $inst_convocations->getAllJoueurs();
-				afficheAdminJoueurs( $equipes, $joueurs );
+				$equipes = $inst_convocations->get_all_equipes();
+				$joueurs = $inst_convocations->get_all_joueurs();
+				affiche_admin_joueurs( $equipes, $joueurs );
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -59,24 +49,21 @@
 					';
 			}
 		}
-		// Si on veut procéder à l'ajout d'un joueur
-		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) {
-			$equipes = $inst_convocations->getAllEquipes();
-			afficheAddJoueur( $equipes );
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ){
+			$equipes = $inst_convocations->get_all_equipes();
+			affiche_add_joueur( $equipes );
 		}
-		// Si on veut procéder à la modification d'un joueur
-		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )  {
-			$equipes = $inst_convocations->getAllEquipes();
-			$joueur = $inst_convocations->getJoueur( $_GET['id'] );
-			afficheEditJoueur( $joueur, $equipes );
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ){
+			$equipes = $inst_convocations->get_all_equipes();
+			$joueur = $inst_convocations->get_joueur( $_GET['id'] );
+			affiche_edit_joueur( $joueur, $equipes );
 		}
-		// Si on veut procéder à la suppression d'un joueur
-		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'del' ) {
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'del' ){
 			$id = $_GET['id'];
-			$inst_convocations->deleteJoueur( $id );
+			$inst_convocations->delete_joueur( $id );
 			
-			$equipes = $inst_convocations->getAllEquipes();
-			$joueurs = $inst_convocations->getAllJoueurs();
+			$equipes = $inst_convocations->get_all_equipes();
+			$joueurs = $inst_convocations->get_all_joueurs();
 			afficheAdminJoueurs( $equipes, $joueurs );
 			echo '
 				<script type="text/javascript">
@@ -85,24 +72,19 @@
 				</script>
 				';
 		}
-		// Si on veut filtrer sur une équipe pour un affichage plus lisible
-		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'filtrer' && isset( $_GET['filtre-equipe'] ) && $_GET['filtre-equipe'] != 'toutes' ) {
-			$equipes = $inst_convocations->getAllEquipes();
-			$joueurs = $inst_convocations->getJoueursByEquipe( $_GET['filtre-equipe'] );
-			afficheAdminJoueurs( $equipes, $joueurs );
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'filtrer' && isset( $_GET['filtre-equipe'] ) && $_GET['filtre-equipe'] != 'toutes' ){
+			$equipes = $inst_convocations->get_all_equipes();
+			$joueurs = $inst_convocations->get_joueurs_by_equipe( $_GET['filtre-equipe'] );
+			affiche_admin_joueurs( $equipes, $joueurs );
 		}
-		// Sinon, on charge le listing de tous les joueurs
-		else {
-			$equipes = $inst_convocations->getAllEquipes();
-			$joueurs = $inst_convocations->getAllJoueurs();
-			afficheAdminJoueurs( $equipes, $joueurs );
+		else{
+			$equipes = $inst_convocations->get_all_equipes();
+			$joueurs = $inst_convocations->get_all_joueurs();
+			affiche_admin_joueurs( $equipes, $joueurs );
 		}
 	}
 	
-	/*
-	* Fonction d'affichage du listing des joueurs
-	*/
-	function afficheAdminJoueurs( $equipes, $joueurs ) {
+	function affiche_admin_joueurs( $equipes, $joueurs ){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -118,15 +100,13 @@
 						<input type="hidden" name="action" value="filtrer" />
 						<select name="filtre-equipe">
 							<option value="toutes">Toutes les équipes</option>';
-							foreach ( $equipes as $equipe ) {
-								if( isset( $_GET['filtre-equipe'] ) )
-								{
-									if( $equipe->nom == $_GET['filtre-equipe'] )
-									{
+							foreach( $equipes as $equipe ){
+								if( isset( $_GET['filtre-equipe'] ) ){
+									if( $equipe->nom == $_GET['filtre-equipe'] ){
 										$html .= '<option value="'. $equipe->nom .'" selected>'. $equipe->nom .'</option>';
 									}
 								}
-								else {
+								else{
 									$html .= '<option value="'. $equipe->nom .'">'. $equipe->nom .'</option>';
 								}
 							}
@@ -146,7 +126,7 @@
 						</tr>
 					</thead>
 					<tbody>';
-					foreach ( $joueurs as $joueur ) {
+					foreach( $joueurs as $joueur ){
 						$html .= '
 							<tr>
 								<td><strong><a title="Modifier »" href="admin.php?page=admin-joueurs&id='. $joueur->id .'&action=edit">'. $joueur->nom .'</a></strong></td>
@@ -172,10 +152,7 @@
 		echo $html;
 	}
 	
-	/*
-	* Fonction d'affichage de l'ajout d'un joueur
-	*/
-	function afficheAddJoueur ($equipes) {
+	function affiche_add_joueur( $equipes ){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -206,7 +183,7 @@
 							<td width="300">
 								<select name="equipe" id="equipe">
 									<option value=""></option>';
-									foreach ( $equipes as $equipe ) {
+									foreach( $equipes as $equipe ){
 										$html .= '<option value="'. $equipe->nom .'">'. $equipe->nom .'</option>';
 									}
 									$html .= '
@@ -227,7 +204,7 @@
 	/*
 	* Fonction d'affichage de l'édition d'un joueur
 	*/
-	function afficheEditJoueur ($joueur, $equipes) {
+	function affiche_edit_joueur( $joueur, $equipes ){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -237,7 +214,7 @@
 				</h2>
 				<div id="alert"></div>
 				<form action="admin.php?page=admin-joueurs&action=edit&save=true" method="POST">';
-					foreach ($joueur as $info) {
+					foreach( $joueur as $info ){
 						$html .= '
 								<table>
 									<tbody>
@@ -259,10 +236,11 @@
 										<td width="300"><label for="equipe">Equipe : </label></td>
 										<td width="300">
 											<select name="equipe" id="equipe">';
-												foreach ( $equipes as $equipe ) {
-													if ($equipe->nom == $info->equipe) {
+												foreach( $equipes as $equipe ){
+													if( $equipe->nom == $info->equipe ){
 														$html .= '<option value="'. $info->equipe .'" selected>'. $info->equipe .'</option>';
-													} else {
+													}
+													else{
 													$html .= '<option value="'. $equipe->nom .'">'. $equipe->nom .'</option>';
 													}
 												}

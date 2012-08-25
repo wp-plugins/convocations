@@ -1,13 +1,11 @@
 <?php
-	function adminConvocations()
+	function admin_convocations_panel()
 	{
-		global $inst_convocations; // Instance de la classe Convocation
+		global $inst_convocations;
 		
-		// Enregistrement des données de convocation
-		if( isset( $_GET['save'] ) && $_GET['save']== 'true' )
+		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' )
 		{
-			// Dans le cas d'une modification
-			if( (isset( $_GET['action'] ) && $_GET['action']== 'edit' ) )
+			if( (isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) )
 			{
 				$id 		= $_POST['id'];
 				$equipadv 	= $_POST['equipadv'];
@@ -18,10 +16,10 @@
 				$heurematch = $_POST['heurematch'];
 				$arrJoueurs = $_POST['selectionnes'];
 				
-				$inst_convocations->updateConvocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
+				$inst_convocations->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
 				
-				$convocations = $inst_convocations->getAllConvocations();
-				afficheAdminConvocations( $convocations );
+				$convocations = $inst_convocations->get_all_convocations();
+				affiche_admin_convocations( $convocations );
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -29,18 +27,16 @@
 					</script>';
 			}
 		}
-		// Modification des données de convocation
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )
 		{
-			$convocation = $inst_convocations->getConvocation( $_GET['id'] );
-			$joueurs = $inst_convocations->getAllJoueurs();
-			afficheEditConvocation( $convocation, $joueurs );
+			$convocation = $inst_convocations->get_convocation( $_GET['id'] );
+			$joueurs = $inst_convocations->get_all_joueurs();
+			affiche_edit_convocation( $convocation, $joueurs );
 		}
-		// Affichage du listing des convocations
 		else
 		{
-			$convocations = $inst_convocations->getAllConvocations();
-			afficheAdminConvocations( $convocations );
+			$convocations = $inst_convocations->get_all_convocations();
+			affiche_admin_convocations( $convocations );
 		}
 	}
 	
@@ -48,7 +44,7 @@
 	 * Fonction qui affiche le listing des convocations dans le menu "Convocations"
 	 * @param convocations Tableau contenant toutes les convocations et leurs données
 	 */
-	function afficheAdminConvocations( $convocations )
+	function affiche_admin_convocations( $convocations )
 	{
 		$html = '';
 		
@@ -109,7 +105,7 @@
 	 * @param convocation Tableau contenant les données de la convocation à modifier
 	 * @param joueurs Tableau comprenant tous les joueurs enregistrés en base
 	 */
-	function afficheEditConvocation( $convocation, $joueurs )
+	function affiche_edit_convocation( $convocation, $joueurs )
 	{
 		$html = '';
 		

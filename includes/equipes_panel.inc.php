@@ -1,13 +1,10 @@
 <?php
-	/**
-	* Fonction gérant l'affichage des différents panels de l'administration des équipes
-	* @global inst_convocations
-	*/
-	function adminEquipes() {
+	function admin_equipes_panel(){
 		global $inst_convocations;
 		
-		// Si on passe en mode "Sauvegarde"
-		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' ) {
+		// If we try to save
+		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' ){
+			// We initialize the variables
 			$nom = '';
 			$responsable = '';
 			$telephone = '';
@@ -18,14 +15,21 @@
 			if( isset( $_POST['telephone'] ) ){ $telephone = $_POST['telephone']; }
 			if( isset( $_POST['entrainement'] ) ){ $entrainement = $_POST['entrainement']; }
 			
-			// Si on ajoute une nouvelle équipe
+			// If we try to add a team
 			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) ){
-				$insert = $inst_convocations->insertEquipe($nom, $responsable, $telephone, $entrainement);
+				// We try to insert in database
+				$insert = $inst_convocations->insert_equipe( $nom, $responsable, $telephone, $entrainement);
 				
-				// Si l'insertion des données à réussi, on retourne au listing des équipes et on affiche un message de succès
-				if( $insert ) {
-					$equipes = $inst_convocations->getAllEquipes();
-					afficheAdminEquipes( $equipes );
+				// If the insertion has succeeded
+				if( $insert ){
+					// We add a convocation link to this team
+					$inst_convocations->insert_convocation( $nom );
+					
+					// We retrieve all team and print the listing
+					$equipes = $inst_convocations->get_all_equipes();
+					affiche_admin_equipes( $equipes );
+					
+					// Then, we print a successful message
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -33,9 +37,9 @@
 						</script>
 						';
 				} 
-				// Sinon on affiche une erreur
-				else {
-					afficheAddEquipe();
+				else{
+					// Else, we print the adding panel and an error message 
+					affiche_add_equipe();
 					echo '
 						<script type="text/javascript">
 							document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -44,17 +48,21 @@
 						';
 				}
 			}
-			
-			// Si on édite une équipe existante
-			if( ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) ){
+			// If we try to edit a team
+			elseif( ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) ){
+				// We initialize the variables
 				$id = '';
 				if( isset( $_POST['id'] ) ){ $id = $_POST['id']; }
 				$old_name = $_POST['old_name'];
 				
-				$inst_convocations->updateEquipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement );
+				// We update the team's database with the new informations
+				$inst_convocations->update_equipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement );
 				
-				$equipes = $inst_convocations->getAllEquipes();
-				afficheAdminEquipes( $equipes );
+				// We retrieve all team and print the listing
+				$equipes = $inst_convocations->get_all_equipes();
+				affiche_admin_equipes( $equipes );
+				
+				// Then, we print a successful message
 				echo '
 					<script type="text/javascript">
 						document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -65,24 +73,24 @@
 			
 			
 		}
-		// Si on veut procéder à l'ajout d'une équipe
-		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ) {
-			afficheAddEquipe();
+		// If we want to type a new team
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'add' ){
+			affiche_add_equipe();
 		}
-		// Si on veut procéder à la modification d'une équipe
-		elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )  {
-			$equipe = $inst_convocations->getEquipe( $_GET['id'] );
-			afficheEditEquipe( $equipe );
+		// If we want to edit an existing team
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ){
+			$equipe = $inst_convocations->get_equipe( $_GET['id'] );
+			affiche_edit_equipe( $equipe );
 		}
-		// Si on veut procéder à la suppression d'une équipe
-		elseif ( isset( $_GET['action'] ) && $_GET['action'] == 'del' ) {
+		// If we want to delete a team
+		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'del' ){
 			$id = $_GET['id'];
 			$equipe = $_GET['equipe'];
-			$inst_convocations->deleteEquipe( $id );
-			$inst_convocations->deleteConvocation( $equipe );
+			$inst_convocations->delete_equipe( $id );
+			$inst_convocations->delete_convocation( $equipe );
 			
-			$equipes = $inst_convocations->getAllEquipes();
-			afficheAdminEquipes( $equipes );
+			$equipes = $inst_convocations->get_all_equipes();
+			affiche_admin_equipes( $equipes );
 			echo '
 				<script type="text/javascript">
 					document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
@@ -90,16 +98,13 @@
 				</script>
 				';
 		}
-		else {
-			$equipes = $inst_convocations->getAllEquipes();
-			afficheAdminEquipes( $equipes );
+		else{
+			$equipes = $inst_convocations->get_all_equipes();
+			affiche_admin_equipes( $equipes );
 		}
 	}
 	
-	/*
-	* Fonction d'affichage du listing des équipes
-	*/
-	function afficheAdminEquipes( $equipes ) {
+	function affiche_admin_equipes( $equipes ){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -121,7 +126,7 @@
 					</thead>
 					<tbody>
 					';
-					foreach ( $equipes as $equipe ) {
+					foreach( $equipes as $equipe ){
 						$html .= '
 								<tr>
 									<td><strong><a title="Modifier »" href="admin.php?page=admin-equipes&id='. $equipe->id .'&action=edit">'. $equipe->nom .'</a></strong></td>
@@ -149,10 +154,7 @@
 		echo $html;
 	}
 	
-	/*
-	* Fonction d'affichage de l'ajout d'une équipe
-	*/
-	function afficheAddEquipe () {
+	function affiche_add_equipe(){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -195,10 +197,7 @@
 		echo $html;
 	}
 	
-	/*
-	* Fonction d'affichage de l'édition d'une équipe
-	*/
-	function afficheEditEquipe ($equipe) {
+	function affiche_edit_equipe( $equipe ){
 		$html = '';
 		
 		$html .= '<div class="wrap">';
@@ -208,7 +207,7 @@
 					<a class="add-new-h2" href="admin.php?page=admin-equipes&action=add">Ajouter</a>
 				</h2>
 				<form action="admin.php?page=admin-equipes&action=edit&save=true" method="POST">';
-					foreach ($equipe as $info) {
+					foreach( $equipe as $info ){
 						$html .= '
 								<table>
 									<tbody>

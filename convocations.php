@@ -1,43 +1,128 @@
 <?php
 /*
 Plugin Name: Convocations
-Description: Convocations est un plugin pour le clubs sportifs souhaitant gérer et afficher sur leur site la liste des joueurs convoqués à un match.
-Version: 0.2
+Plugin URI: http://wordpress.org/extend/plugins/convocations/
+Description: Convocations plugin is for sports associations such as football clubs, handball clubs, basket-ball clubs, ... which allows you to manage the notifications of your teams and of your players to matches.
+Version: 0.3
 Author: JC
 Author URI: http://www.breizh-seo.com/
 */
 
-if(!class_exists("Convocations"))
-{
-	class Convocations
-	{
-		/** 
-		 * Constructeur
-		 */
+if(!class_exists( 'Convocations' )){
+	class Convocations{
+		private $inst_equipe;
+		private $inst_joueur;
+		private $convocations_db_version;
+		
 		function __construct()
 		{
-			define('CONVOCATIONS_URL', WP_PLUGIN_URL.'/'.dirname(plugin_basename(__FILE__)));
+			// Define the function for activation and deactivation
+			register_activation_hook( __FILE__, array( &$this, 'install' ) );
+			register_deactivation_hook( __FILE__, array( &$this, 'deactivation' ) );
+			
+			// Define the path of plugin
+			define('CONVOCATIONS_VERSION', '0.3');
+			define('CONVOCATIONS_FILE', basename(__FILE__));
+			define('CONVOCATIONS_PATH', plugin_dir_path(__FILE__));
+			define('CONVOCATIONS_URL', plugin_dir_url( __FILE__ ));
+			
+			require_once (CONVOCATIONS_PATH.'includes/convocations_panel.inc.php');
+			require_once (CONVOCATIONS_PATH.'includes/equipes_panel.inc.php');
+			require_once (CONVOCATIONS_PATH.'includes/joueurs_panel.inc.php');
+			require_once (CONVOCATIONS_PATH.'class/ConvocationsEquipe.class.php');
+			require_once (CONVOCATIONS_PATH.'class/ConvocationsJoueur.class.php');
+			
+			$this->inst_equipe = ConvocationsEquipe::get_instance();
+			$this->inst_joueur = ConvocationsJoueur::get_instance();
+			$this->convocations_db_version = 0.1;
 		}
 		
-		/** 
-		 * Ajout du menu dans l'administration
-		 */
-		function adminMenu()
+		function install(){
+			$this->install_db();
+		}
+		
+		function deactivation(){
+		}
+		
+		function install_db(){
+			global $wpdb;
+			$sql = '';
+			$table_name = $wpdb->prefix . 'convocations';
+			$sql .= "CREATE TABLE `$table_name` (";
+			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
+			$sql .= "`equipe` text NOT NULL,";
+			$sql .= "`equipadv` text NOT NULL,";
+			$sql .= "`date` date NOT NULL,";
+			$sql .= "`domext` text NOT NULL,";
+			$sql .= "`lieurdv` text NOT NULL,";
+			$sql .= "`heurerdv` text NOT NULL,";
+			$sql .= "`heurematch` text NOT NULL,";
+			$sql .= "PRIMARY KEY (`id`))";
+			$sql .= "ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			
+			$table_name = $wpdb->prefix . 'convocations_equipes';
+			$sql .= "CREATE TABLE `$table_name` (";
+			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
+			$sql .= "`nom` text NOT NULL,";
+			$sql .= "`responsable` text NOT NULL,";
+			$sql .= "`telephone` text NOT NULL,";
+			$sql .= "`entrainement` text NOT NULL,";
+			$sql .= "PRIMARY KEY (`id`))";
+			$sql .= "ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			
+			$table_name = $wpdb->prefix . 'convocations_joueurs';
+			$sql .= "CREATE TABLE `$table_name` (";
+			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
+			$sql .= "`nom` text NOT NULL,";
+			$sql .= "`prenom` text NOT NULL,";
+			$sql .= "`poste` text NOT NULL,";
+			$sql .= "`equipe` text NOT NULL,";
+			$sql .= "`etat` int(11) NOT NULL,";
+			$sql .= "`numconvocation` int(11) NOT NULL,";
+			$sql .= "PRIMARY KEY (`id`))";
+			$sql .= "ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql);
+			update_option( 'convocations_db_version', $this->convocations_db_version );
+		}
+		
+		function init()
 		{
-			add_menu_page('Convocations', 'Convocations', 'manage_options', __FILE__, 'adminConvocations', '', 21);
-			add_submenu_page(__FILE__ , 'Gestion des équipes', 'Gestion des équipes', 'manage_options', 'admin-equipes', 'adminEquipes');
-			add_submenu_page(__FILE__ , 'Gestion des joueurs', 'Gestion des joueurs', 'manage_options', 'admin-joueurs', 'adminJoueurs');
+			if( is_admin() ){
+				// Check for database update
+				add_action( 'plugins_loaded', array( &$this, 'check_db_update' ) );
+				
+				// Add some js
+				add_action( 'admin_init', array( &$this,'add_scripts' ) );
+				
+				// Add the administration menu
+				add_action( 'admin_menu', array( &$this,'admin_menu_convocations' ) );
+				
+				// Add some code on the administration footer
+				add_action( 'admin_footer', array( &$this,'admin_footer' ) );
+			}
+			
+			// Add a shortcode to display Convocations in front-end
+			add_shortcode( 'convocations', array( &$this,'add_shortcode' ) );
 		}
 		
-		function addScripts()
+		function add_scripts()
 		{
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery', 'jquery-ui-core' ) );
+			
 			wp_enqueue_style( 'jquery.ui.theme', CONVOCATIONS_URL . '/css/jquery-ui-1.8.23.custom.css' );
 		}
 		
-		function adminFooter()
+		function admin_menu_convocations(){
+			add_menu_page('Convocations', 'Convocations', 'manage_options', __FILE__, 'admin_convocations_panel', CONVOCATIONS_URL . '/images/convocations.png', 21);
+			add_submenu_page(__FILE__ , 'Gestion des équipes', 'Gestion des équipes', 'manage_options', 'admin-equipes', 'admin_equipes_panel');
+			add_submenu_page(__FILE__ , 'Gestion des joueurs', 'Gestion des joueurs', 'manage_options', 'admin-joueurs', 'admin_joueurs_panel');
+		}
+		
+		function admin_footer()
 		{
 			echo '
 				<script type="text/javascript">
@@ -58,209 +143,35 @@ if(!class_exists("Convocations"))
 			';
 		}
 		
-		/** 
-		 * Activation du plugin convocations 
-		 * @global wpdb $wpdb 
-		 */
-		function activation()
-		{
-			global $wpdb;
-		 
-			$tableName = $wpdb->prefix . 'convocations';
-			$sql = "CREATE TABLE IF NOT EXISTS `" . $tableName . "` (";
-			$sql .= "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,";
-			$sql .= "`equipe` TEXT NOT NULL ,";
-			$sql .= "`equipadv` TEXT NOT NULL ,";
-			$sql .= "`date` DATE NOT NULL ,";
-			$sql .= "`domext` TEXT NOT NULL ,";
-			$sql .= "`lieurdv` TEXT NOT NULL ,";
-			$sql .= "`heurerdv` TEXT NOT NULL ,";
-			$sql .= "`heurematch` TEXT NOT NULL) ";
-			$sql .= "CHARACTER SET utf8 ,";
-			$sql .= " COLLATE utf8_general_ci;";
-			
-			$tableName = $wpdb->prefix . 'convocations_equipes';
-			$sql2 = "CREATE TABLE IF NOT EXISTS `" . $tableName . "` (";
-			$sql2 .= "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,";
-			$sql2 .= "`nom` TEXT NOT NULL ,";
-			$sql2 .= "`responsable` TEXT NOT NULL ,";
-			$sql2 .= "`telephone` TEXT NOT NULL ,";
-			$sql2 .= "`entrainement` INT NOT NULL) ";
-			$sql2 .= "CHARACTER SET utf8 ,";
-			$sql2 .= " COLLATE utf8_general_ci;";
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql3 = "CREATE TABLE IF NOT EXISTS `" . $tableName . "` (";
-			$sql3 .= "`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,";
-			$sql3 .= "`nom` TEXT NOT NULL ,";
-			$sql3 .= "`prenom` TEXT NOT NULL ,";
-			$sql3 .= "`poste` TEXT NOT NULL ,";
-			$sql3 .= "`equipe` TEXT NOT NULL ,";
-			$sql3 .= "`etat` INT NOT NULL ,";
-			$sql3 .= "`numconvocation` INT NOT NULL) ";
-			$sql3 .= "CHARACTER SET utf8 ,";
-			$sql3 .= "COLLATE utf8_general_ci;";
-			
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-			dbDelta($sql);
-			dbDelta($sql2);
-			dbDelta($sql3);
-			
-			// Définie la version des tables (en vue d'une mise à jour par exemple)
-			add_option('convocations_db_version', '0.1');
+		function add_shortcode(){
+			return displayConvocations();
 		}
 		
-		/* GETTER */
-		
-		/**
-		 * On récupère les éléments de la convocation en fonction de l'id passé en paramètre
-		 * @param theConvocation Identifiant de la convocation à récupérer
-		 * @return un tableau contenant les éléments d'une convocation
-		 */
-		function getConvocation( $theConvocation )
-		{
-			global $wpdb;
-			$tableName = $wpdb->prefix . 'convocations';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE id = %d
-								',
-								$theConvocation
-					);
-			
-			$convocation = $wpdb->get_results($sql);
-			
-			return $convocation;
+		function check_db_update(){
+			if( get_site_option( 'convocations_db_version' ) != $this->convocations_db_version ){
+				$this->install_db();
+			}
 		}
 		
-		/**
-		 * On récupère toutes les convocations enregistrées en base
-		 */
-		function getAllConvocations()
-		{
+		function insert_convocation( $nom ){
 			global $wpdb;
 			
-			$tableName = $wpdb->prefix . 'convocations';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $tableName . ' ORDER BY equipe ASC');
-			$allConvocations = $wpdb->get_results($sql);
-			
-			return $allConvocations;
+			$table_name = $wpdb->prefix . 'convocations';
+			$wpdb->insert(
+				$table_name,
+				array(
+						'equipe' 	=> $nom,
+						'date' 		=> date_i18n('Y-m-d')
+				)
+			);
 		}
 		
-		/**
-		 * On récupère les éléments de l'équipe en fonction de l'id passé en paramètre
-		 */
-		function getEquipe( $theEquipe )
-		{
+		function update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs ){
 			global $wpdb;
 			
-			$tableName = $wpdb->prefix . 'convocations_equipes';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE id = %d
-								',
-								$theEquipe
-					);
-			$equipe = $wpdb->get_results($sql);
-			
-			return $equipe;
-		}
-		
-		/**
-		 * On récupère toutes les équipes enregistrées en base
-		 */
-		function getAllEquipes()
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_equipes';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $tableName . ' ORDER BY nom ASC');
-			$allEquipes = $wpdb->get_results($sql);
-			
-			return $allEquipes;
-		}
-		
-		/**
-		 * On récupère les éléments du joueur en fonction de l'id passé en paramètre
-		 */
-		function getJoueur( $theJoueur )
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE id = %d
-								',
-								$theJoueur
-					);
-			$joueur = $wpdb->get_results($sql);
-			
-			return $joueur;
-		}
-		
-		/**
-		 * On récupère les joueurs appartenant à l'équipe passée en paramètre
-		 */
-		function getJoueursByEquipe( $theEquipe )
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE equipe = %s 
-								ORDER BY nom ASC
-								',
-								$theEquipe
-					);
-			$joueursEquipe = $wpdb->get_results($sql);
-			
-			return $joueursEquipe;
-		}
-		
-		/**
-		 * On récupère tous les joueurs enregistrés en base
-		 */
-		function getAllJoueurs()
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $tableName . ' ORDER BY nom ASC');
-			$allJoueurs = $wpdb->get_results($sql);
-			
-			return $allJoueurs;
-		}
-		
-		/* GESTION DES CONVOCATIONS */
-		
-		/**
-		 * On met à jour la convocation
-		 * @param id Identifiant de la convocation à mettre à jour
-		 * @param equipadv Nom de l'équipe adverse
-		 * @param date Date de la convocation
-		 * @param domext Lieu de la rencontre
-		 * @param lieurdv Lieu du RDV
-		 * @param heurerdv Heure du RDV
-		 * @param heurematch Heure du match
-		 * @param arrJoueurs Tableau des joueurs à convoquer
-		 */
-		function updateConvocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs )
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations';
+			$table_name = $wpdb->prefix . 'convocations';
 			$wpdb->update(
-				$tableName,
+				$table_name,
 				array(
 						'equipadv'	=> $equipadv,
 						'date'		=> $date,
@@ -274,9 +185,9 @@ if(!class_exists("Convocations"))
 				)
 			);
 			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
+			$table_name = $wpdb->prefix . 'convocations_joueurs';
 			$wpdb->update(
-				$tableName,
+				$table_name,
 				array(
 						'numconvocation'	=> '-1'
 				),
@@ -288,7 +199,7 @@ if(!class_exists("Convocations"))
 			if(!empty($arrJoueurs)) {
 				foreach ($arrJoueurs as $joueur) {
 					$wpdb->update(
-						$tableName,
+						$table_name,
 						array(
 								'numconvocation'	=> $id
 						),
@@ -300,260 +211,101 @@ if(!class_exists("Convocations"))
 			}
 		}
 		
-		/**
-		 * Fonction permettant d'effacer la convocation associée à une équipe lors de la suppression de cette équipe
-		 * @param theEquipe Equipe liant la convocation
-		 */
-		function deleteConvocation( $theEquipe ) {
+		function delete_convocation( $the_equipe ){
 			global $wpdb;
 			
-			$tableName = $wpdb->prefix . 'convocations';
+			$table_name = $wpdb->prefix . 'convocations';
 			$sql = $wpdb->prepare(
 								'
 								DELETE 
-								FROM ' . $tableName . ' 
+								FROM ' . $table_name . ' 
 								WHERE equipe = %s
 								',
-								$theEquipe
+								$the_equipe
 					);
 			$wpdb->query($sql);
 		}
 		
-		/* GESTION DES EQUIPES */
-		
-		/**
-		 * Fonction permettant de créer une équipe en base
-		 * @param nom Nom de l'équipe à insérer
-		 * @param responsable Nom(s) du(des) responsable(s) de l'équipe
-		 * @param telephone Numéro(s) de téléphone du(des) responsable(s) de l'équipe
-		 * @param entrainement Infos sur les jours et heures d'entrainement de l'équipe
-		 * @return un booleen égale à TRUE si l'insertion a été effectuée, FALSE sinon
-		 */
-		function insertEquipe( $nom, $responsable, $telephone, $entrainement ) {
+		function get_convocation( $the_convocation ){
 			global $wpdb;
-			
-			// On vérifie qu'une équipe avec le même non n'existe pas déjà
-			$tableName = $wpdb->prefix . 'convocations_equipes';
+			$table_name = $wpdb->prefix . 'convocations';
 			$sql = $wpdb->prepare(
 								'
 								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE nom = %s
-								',
-								$nom
-					);
-			$equipe = $wpdb->get_results($sql);
-			
-			// S'il n'en existe pas, on la créer
-			if (count ($equipe) == 0){
-				$wpdb->insert(
-					$tableName,
-					array(
-							'nom' 			=> $nom,
-							'responsable' 	=> $responsable,
-							'telephone' 	=> $telephone,
-							'entrainement' 	=> $entrainement
-					)
-				);
-				
-				// et on ajoute la convocation qui sera liée à cette équipe
-				$tableName = $wpdb->prefix . 'convocations';
-				$wpdb->insert(
-					$tableName,
-					array(
-							'equipe' => $nom
-					)
-				);
-				
-				return true;
-			}
-			// Sinon on retourne false
-			else
-			{
-				return false;
-			}
-		}
-		
-		/**
-		 * Fonction permettant de mettre à jour une équipe en base
-		 * @param $id Identifiant de l'équipe à mettre à jour
-		 * @param old_name Ancien nom de l'équipe
-		 * @param nom Nouveau nom de l'équipe
-		 * @param responsable Nouveau Nom(s) du(des) responsable(s) de l'équipe
-		 * @param telephone Nouveau Numéro(s) de téléphone du(des) responsable(s) de l'équipe
-		 * @param entrainement Nouvelles Infos sur les jours et heures d'entrainement de l'équipe
-		 */
-		function updateEquipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement )
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_equipes';
-			
-			$wpdb->update(
-				$tableName,
-				array(
-						'nom'			=> $nom,
-						'responsable'	=> $responsable,
-						'telephone'		=> $telephone,
-						'entrainement'	=> $entrainement
-				),
-				array(
-						'id' => $id
-				)
-			);
-			
-			// Si le nom à enregistrer est différent de l'ancien nom, on met à jour la convocation liée
-			if ( $nom != $old_name) {
-				$tableName = $wpdb->prefix . 'convocations';
-				
-				$wpdb->update(
-					$tableName,
-					array(
-							'equipe' => $nom
-					),
-					array(
-							'equipe' => $old_name
-					)
-				);
-			}
-		}
-		
-		/**
-		 * Fonction permettant de supprimer une équipe en base
-		 * @param $id Identifiant de l'équipe à supprimer
-		 */
-		function deleteEquipe( $id )
-		{
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_equipes';
-			$sql = $wpdb->prepare(
-								'
-								DELETE 
-								FROM ' . $tableName . ' 
+								FROM ' . $table_name . ' 
 								WHERE id = %d
 								',
-								$id
+								$the_convocation
 					);
-			$wpdb->query($sql);
+			
+			$convocation = $wpdb->get_results($sql);
+			
+			return $convocation;
 		}
 		
-		/* GESTION DES JOUEURS */
-		
-		/**
-		 * Fonction permettant de créer une équipe en base
-		 * @param $nom Nom du joueur
-		 * @param $prenom Prénom du joueur
-		 * @param $poste Poste occupé par le joueur
-		 * @param $equipe Equipe du joueur
-		 * @return un booleen égale à TRUE si l'insertion a été effectuée, FALSE sinon
-		 */
-		function insertJoueur( $nom, $prenom, $poste, $equipe )
-		{
+		function get_all_convocations(){
 			global $wpdb;
 			
-			// On vérifie qu'un joueur avec les mêmes nom et prénom n'existe pas déjà
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $tableName . ' 
-								WHERE nom = %s
-								AND prenom = %s
-								',
-								$nom, $prenom
-					);
-			$joueur = $wpdb->get_results($sql);
+			$table_name = $wpdb->prefix . 'convocations';
+			$sql = $wpdb->prepare('SELECT * FROM ' . $table_name . ' ORDER BY equipe ASC');
+			$all_convocations = $wpdb->get_results($sql);
 			
-			// S'il n'en existe pas, on le créer
-			if (count ($joueur) == 0){
-				$wpdb->insert(
-					$tableName,
-					array(
-							'nom' 		=> $nom,
-							'prenom' 	=> $prenom,
-							'poste' 	=> $poste,
-							'equipe' 	=> $equipe
-					)
-				);
-				
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return $all_convocations;
 		}
 		
-		/**
-		 * Fonction permettant de mettre à jour un joueur en base
-		 * @param $id Identifiant du joueur à mettre à jour
-		 * @param $nom Nom du joueur
-		 * @param $prenom Prénom du joueur
-		 * @param $poste Poste occupé par le joueur
-		 * @param $equipe Equipe du joueur
-		 */
-		function updateJoueur( $id, $nom, $prenom, $poste, $equipe ) {
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$wpdb->update(
-				$tableName,
-				array(
-						'nom'		=> $nom,
-						'prenom'	=> $prenom,
-						'poste'		=> $poste,
-						'equipe'	=> $equipe
-				),
-				array(
-						'id' => $id
-				)
-			);
+		function insert_equipe( $nom, $responsable, $telephone, $entrainement ){
+			$insert = $this->inst_equipe->insert_equipe( $nom, $responsable, $telephone, $entrainement );
+			return $insert;
 		}
 		
-		/**
-		 * Fonction permettant de supprimer un joueur en base
-		 * @param $id Identifiant du joueur à supprimer
-		 */
-		function deleteJoueur( $id ) {
-			global $wpdb;
-			
-			$tableName = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								DELETE 
-								FROM ' . $tableName . ' 
-								WHERE id = %d
-								',
-								$id
-					);
-			$wpdb->query($sql);
+		function update_equipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement ){
+			$this->inst_equipe->update_equipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement );
+		}
+		
+		function delete_equipe( $id ){
+			$this->inst_equipe->delete_equipe( $id );
+		}
+		
+		function get_equipe( $the_equipe_id ){
+			$equipe = $this->inst_equipe->get_equipe( $the_equipe_id );
+			return $equipe;
+		}
+		
+		function get_all_equipes(){
+			$all_equipes = $this->inst_equipe->get_all_equipes();
+			return $all_equipes;
+		}
+		
+		function insert_joueur( $nom, $prenom, $poste, $equipe ){
+			$insert = $this->inst_joueur->insert_joueur( $nom, $prenom, $poste, $equipe );
+			return $insert;
+		}
+		
+		function update_joueur( $id, $nom, $prenom, $poste, $equipe ){
+			$this->inst_joueur->update_joueur( $id, $nom, $prenom, $poste, $equipe );
+		}
+		
+		function delete_joueur( $the_joueur_id ){
+			$this->inst_joueur->delete_joueur( $the_joueur_id );
+		}
+		
+		function get_joueur(){
+			$this->inst_joueur->get_joueur();
+		}
+		
+		function get_joueurs_by_equipe( $the_equipe ){
+			$joueurs_by_equipe = $this->inst_joueur->get_joueurs_by_equipe( $the_equipe );
+			return $joueurs_by_equipe;
+		}
+		
+		function get_all_joueurs(){
+			$all_joueurs = $this->inst_joueur->get_all_joueurs();
+			return $all_joueurs;
 		}
 	}
 }
-
-if ( class_exists( 'Convocations' ) )
-{
+if ( class_exists( 'Convocations' ) ){
 	$inst_convocations = new Convocations();
+	$inst_convocations->init();
 }
-
-if (isset($inst_convocations))
-{
-	require_once (ABSPATH.'wp-content/plugins/convocations/front/display_html.php');
-	require_once (ABSPATH.'wp-content/plugins/convocations/admin/convocations_panel.php');
-	require_once (ABSPATH.'wp-content/plugins/convocations/admin/equipes_panel.php');
-	require_once (ABSPATH.'wp-content/plugins/convocations/admin/joueurs_panel.php');
-	
-	register_activation_hook( __FILE__, array( &$inst_convocations, 'activation' ) );
-	
-	if( is_admin() )
-	{		
-		// Enregistrement du menu dans l'administration
-		add_action( 'admin_menu', array( &$inst_convocations,'adminMenu' ) );
-		// Ajout des scripts
-		add_action( 'admin_init', array( &$inst_convocations,'addScripts' ) );
-		add_action( 'admin_footer', array( &$inst_convocations,'adminFooter' ) );
-	}
-}
-
 ?>
