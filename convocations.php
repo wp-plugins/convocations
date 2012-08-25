@@ -31,6 +31,7 @@ if(!class_exists( 'Convocations' )){
 			require_once (CONVOCATIONS_PATH.'includes/joueurs_panel.inc.php');
 			require_once (CONVOCATIONS_PATH.'class/ConvocationsEquipe.class.php');
 			require_once (CONVOCATIONS_PATH.'class/ConvocationsJoueur.class.php');
+			require_once (CONVOCATIONS_PATH.'front/display_html.php');
 			
 			$this->inst_equipe = ConvocationsEquipe::get_instance();
 			$this->inst_joueur = ConvocationsJoueur::get_instance();
