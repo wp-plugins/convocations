@@ -104,6 +104,9 @@ if(!class_exists( 'Convocations' )){
 				add_action( 'admin_footer', array( &$this,'admin_footer' ) );
 			}
 			
+			// Add some js in front
+			add_action( 'wp_head', array( &$this, 'add_front_scripts' ) );
+			
 			// Add a shortcode to display Convocations in front-end
 			add_shortcode( 'convocations', array( &$this,'add_shortcode' ) );
 		}
@@ -115,6 +118,10 @@ if(!class_exists( 'Convocations' )){
 			wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery', 'jquery-ui-core' ) );
 			
 			wp_enqueue_style( 'jquery.ui.theme', CONVOCATIONS_URL . '/css/jquery-ui-1.8.23.custom.css' );
+		}
+		
+		function add_front_scripts(){
+			wp_enqueue_script('jquery');
 		}
 		
 		function admin_menu_convocations(){
