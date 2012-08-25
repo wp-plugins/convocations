@@ -1,33 +1,34 @@
 <?php
 if( isset( $_POST['lequipe'] ) && $_POST['lequipe'] != '') {
 	global $wpdb;
-	$table_name = $wpdb->prefix . 'convocations_joueurs';
-	$table_name2 = $wpdb->prefix . 'convocations';
 	
-	$sql_joueurs = '
-			SELECT * 
-			FROM ' .$table_name. ' 
-			INNER JOIN '. $table_name2 .' ON '. $table_name2 .'.id = ' .$table_name. '.numconvocation 
-			WHERE ' .$table_name. '.numconvocation = '.$_POST['lequipe'].' 
-			ORDER BY ' .$table_name. '.nom ASC 
-			';
-	$sql_joueurs = $wpdb->prepare($sql_joueurs);
+	$tablename = $wpdb->prefix . 'convocations_joueurs';
+	$sql_joueurs = $wpdb->prepare(
+								'
+								SELECT * 
+								FROM ' .$tablename. ' 
+								INNER JOIN stircl_convocations ON stircl_convocations.id = ' .$tablename. '.numconvocation 
+								WHERE ' .$tablename. '.numconvocation = %d 
+								ORDER BY ' .$tablename. '.nom ASC
+								',
+								$_POST['lequipe']
+					);
 	
 	$joueurs = $wpdb->get_results($sql_joueurs);
 	
-	if( count( $joueurs ) != 0 ) {
-		
+	if( count( $joueurs ) != 0 ){
 		setlocale(LC_TIME, "fr_FR", "fr_FR@euro", "fr", "FR", "fra_fra", "fra");
-		$html = '<p>';
-		$html .= 'Les joueurs de l\'équipe '. $joueurs[0]->equipe .' sont convoqués le ';
+		$html = '<h2>'. $joueurs[0]->equipe .' - Match contre '. $joueurs[0]->equipadv .'</h2>';
+		$html .= '<p>';
+		$html .= 'Les joueurs de l\'équipe sont convoqués le ';
 		$html .= '<strong>'. utf8_encode(strftime("%A %d %B %Y", strtotime($joueurs[0]->date))) .'</strong> ';
-		$html .= 'à <strong>'. $joueurs[0]->heurerdv .'</strong><br />';
+		$html .= 'à <strong>'. $joueurs[0]->heurerdv .'</strong><br /> ';
 		$html .= 'Le lieu du rendez-vous est : '. $joueurs[0]->lieurdv .'<br />';
 		$html .= 'Le match débutera à '. $joueurs[0]->heurematch .'';
 		$html .= '</p>';
-		$html .= '<h2>Liste des joueurs convoqués :</h2>';
+		$html .= '<h3>Liste des joueurs convoqués :</h3>';
 		$html .= '<p>';
-		
+	
 		foreach ( $joueurs as $joueur ) {
 			$html .= $joueur->nom .' '. ucfirst(strtolower($joueur->prenom)) .'<br>';
 		}
@@ -56,8 +57,6 @@ function displayConvocations()
 	$sql = $wpdb->prepare($sql);
 	
 	$convocations = $wpdb->get_results($sql);
-	
-	$html = '';
 	
 	$html .= '
 	<script type="text/javascript">
