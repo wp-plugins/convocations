@@ -64,7 +64,7 @@
 			
 			$equipes = $inst_convocations->get_all_equipes();
 			$joueurs = $inst_convocations->get_all_joueurs();
-			afficheAdminJoueurs( $equipes, $joueurs );
+			affiche_admin_joueurs( $equipes, $joueurs );
 			echo '
 				<script type="text/javascript">
 					document.getElementById("alert").style.cssText="background-color: #FFFFE0; border: 1px solid #E6DB55; margin: 10px 0; padding: 5px; font-size: 12px; border-radius: 3px 3px 3px 3px;";
