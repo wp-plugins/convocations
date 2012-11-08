@@ -61,44 +61,35 @@ function displayConvocations()
 	
 	$convocations = $wpdb->get_results($sql);
 	
-	$html = '';
-	
-	$html .= '
+	?>
 	<script type="text/javascript">
-		function charge_joueurs() {
-			var select = document.getElementById("liste-convocations");
-			var choice = select.selectedIndex
-			var equipe = select.options[choice].value;
-			
-			if(equipe != 0) {
-				jQuery.post("", {lequipe: equipe}, function(data) {
-					document.getElementById("liste-joueurs").innerHTML = data;
-				});
-			}
-			else {
-				document.getElementById("liste-joueurs").innerHTML = "Aucune équipe sélectionnée";
-			}
-		}
-	</script>';
-	if( count( $convocations ) == 0 ) {
-		$html .= '<p>Aucune convocation pour le moment.</p>';
-	} else {
-		$html .= '
+		jQuery(document).ready(function($) {
+			$('#liste-convocations').change(function() {
+				var equipe = $("#liste-convocations option:selected").val();
+				if(equipe != 0) {
+					$.post(this, {lequipe: equipe}, function(data) {
+						$('#liste-joueurs').html(data).show(200);
+					});
+				}else {
+					$('#liste-joueurs').html('Aucune équipe sélectionnée').show(200);
+				}
+				return false;
+			});
+		});
+	</script>
+	<?php if( count( $convocations ) == 0 ) { ?>
+		<p>Aucune convocation pour le moment.</p>
+	<?php } else { ?>
 		<form method="" action="">
 			<label for="liste-convocations">Sélectionnez une équipe pour voir la liste des joueurs convoqués : </label>
-			<select name="liste-convocations" id="liste-convocations" onChange="charge_joueurs();">
-				<option value="0"></option>';
-				
-				foreach ( $convocations as $convocation ) {
-					$html .= '<option value="'. $convocation->id .'">'. $convocation->equipe .'</option>';
-				}
-			$html .= '	
+			<select name="liste-convocations" id="liste-convocations">
+				<option value="0"></option>
+				<?php foreach ( $convocations as $convocation ) { ?>
+					<option value="<?php echo $convocation->id ?>"><?php echo $convocation->equipe ?></option>
+				<?php } ?>
 			</select>
-		</form>';
-	}
-	$html .= '
-	<div class="bordure" style="background: url(\''. get_bloginfo("template_url") .'/images/flash-infos-li-bordure.gif\') repeat-x; margin-top: 25px; ">&nbsp;</div>
-	<div id="liste-joueurs">Aucune équipe sélectionnée</div>';
-	
-	echo $html;
-}
+		</form>
+	<?php } ?>
+	<div class="bordure" style="background: url('<?php bloginfo("template_url") ?>/images/flash-infos-li-bordure.gif') repeat-x; margin-top: 25px; ">&nbsp;</div>
+	<div id="liste-joueurs">Aucune équipe sélectionnée</div>
+<?php } ?>
