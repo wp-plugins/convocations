@@ -60,4 +60,4 @@ The notifications are related teams. It is therefore necessary to create a team 
 Using shortocode to display in front-end !
 
 = 0.4 =
-A lot of bug are fixed !
+A lot of bug are fixed !!
