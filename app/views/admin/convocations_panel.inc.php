@@ -1,7 +1,7 @@
 <?php
 	function admin_convocations_panel()
 	{
-		global $inst_convocations;
+		global $inst_convocations_controller;
 		
 		if( isset( $_GET['save'] ) && $_GET['save'] == 'true' )
 		{
@@ -16,9 +16,9 @@
 				$heurematch = $_POST['heurematch'];
 				$arrJoueurs = $_POST['selectionnes'];
 				
-				$inst_convocations->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
+				$inst_convocations_controller->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
 				
-				$convocations = $inst_convocations->get_all_convocations();
+				$convocations = $inst_convocations_controller->get_all_convocations();
 				affiche_admin_convocations( $convocations );
 				echo '
 					<script type="text/javascript">
@@ -29,13 +29,13 @@
 		}
 		elseif( isset( $_GET['action'] ) && $_GET['action'] == 'edit' )
 		{
-			$convocation = $inst_convocations->get_convocation( $_GET['id'] );
-			$joueurs = $inst_convocations->get_all_joueurs();
+			$convocation = $inst_convocations_controller->get_convocation( $_GET['id'] );
+			$joueurs = $inst_convocations_controller->get_all_joueurs();
 			affiche_edit_convocation( $convocation, $joueurs );
 		}
 		else
 		{
-			$convocations = $inst_convocations->get_all_convocations();
+			$convocations = $inst_convocations_controller->get_all_convocations();
 			affiche_admin_convocations( $convocations );
 		}
 	}

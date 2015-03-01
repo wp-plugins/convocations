@@ -32,7 +32,7 @@
 								WHERE nom = %s
 								AND prenom = %s
 								',
-								$nom, $prenom
+								array( $nom, $prenom )
 					);
 			$joueur = $wpdb->get_results($sql);
 			
@@ -83,7 +83,7 @@
 								FROM ' . $table_name . ' 
 								WHERE id = %d
 								',
-								$id
+								array( $id )
 					);
 			$wpdb->query($sql);
 		}
@@ -98,7 +98,7 @@
 								FROM ' . $table_name . ' 
 								WHERE id = %d
 								',
-								$the_joueur_id
+								array( $the_joueur_id )
 					);
 			$joueur = $wpdb->get_results($sql);
 			return $joueur;
@@ -115,7 +115,7 @@
 								WHERE equipe = %s 
 								ORDER BY nom ASC
 								',
-								$the_equipe
+								array( $the_equipe )
 					);
 			$joueurs_equipe = $wpdb->get_results($sql);
 			
@@ -126,7 +126,7 @@
 			global $wpdb;
 			
 			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $table_name . ' ORDER BY nom ASC');
+			$sql = $wpdb->prepare('SELECT * FROM ' . $table_name . ' ORDER BY nom ASC', array());
 			$all_joueurs = $wpdb->get_results($sql);
 			
 			return $all_joueurs;

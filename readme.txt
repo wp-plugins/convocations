@@ -61,3 +61,6 @@ Using shortocode to display in front-end !
 
 = 0.4 =
 A lot of bug are fixed !!
+
+= 0.5 =
+* Fix function prepare warning
