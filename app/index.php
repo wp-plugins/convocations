@@ -4,6 +4,7 @@ if( ! class_exists( 'Convocations' ) ) {
 	class Convocations {
 		
 		private $obj_convocation_controller;
+		private $obj_joueur_controller;
 		private $convocations_db_version;
 		
 		public function __construct() {
@@ -11,6 +12,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			// Includes
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php' );
+			require_once( CONVOCATIONS_APP_PATH.'controller/controller-joueur.php' );
 			
 			// Define table name
 			global $wpdb;
@@ -37,6 +39,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			// Init objects
 			$this->obj_convocation_controller = new Convocation_Controller();
+			$this->obj_joueur_controller = new Joueur_Controller();
 			$this->convocations_db_version = '0.2';
 		}
 		
@@ -131,6 +134,11 @@ if( ! class_exists( 'Convocations' ) ) {
 		
 		public function admin_menu_convocations() {
 			add_menu_page( __( 'Convocations', 'convocations' ), __( 'Convocations', 'convocations' ), 'manage_convocations', CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ), CONVOCATIONS_URL . 'images/convocations.png', 21);
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Toutes les convocations', 'convocations' ), __( 'Toutes les convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ) );
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Equipes', 'convocations' ), __( 'Equipes', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render_admin_view' ) );
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Joueurs', 'convocations' ), __( 'Joueurs', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render_admin_view' ) );
+			// add_submenu_page(__FILE__ , 'Gestion des équipes', 'Gestion des équipes', 'manage_convocations', 'admin-equipes', 'admin_equipes_panel');
+			// add_submenu_page(__FILE__ , 'Gestion des joueurs', 'Gestion des joueurs', 'manage_convocations', 'admin-joueurs', 'admin_joueurs_panel');
 		}
 		
 		// public function ajax_convocations() {
@@ -207,34 +215,6 @@ if( ! class_exists( 'Convocations' ) ) {
 		// public function get_all_equipes(){
 			// $all_equipes = $this->inst_equipe->get_all_equipes();
 			// return $all_equipes;
-		// }
-		
-		// public function insert_joueur( $nom, $prenom, $poste, $equipe ){
-			// $insert = $this->inst_joueur->insert_joueur( $nom, $prenom, $poste, $equipe );
-			// return $insert;
-		// }
-		
-		// public function update_joueur( $id, $nom, $prenom, $poste, $equipe ){
-			// $this->inst_joueur->update_joueur( $id, $nom, $prenom, $poste, $equipe );
-		// }
-		
-		// public function delete_joueur( $the_joueur_id ){
-			// $this->inst_joueur->delete_joueur( $the_joueur_id );
-		// }
-		
-		// public function get_joueur( $the_joueur_id ){
-			// $joueur = $this->inst_joueur->get_joueur( $the_joueur_id );
-			// return $joueur;
-		// }
-		
-		// public function get_joueurs_by_equipe( $the_equipe ){
-			// $joueurs_by_equipe = $this->inst_joueur->get_joueurs_by_equipe( $the_equipe );
-			// return $joueurs_by_equipe;
-		// }
-		
-		// public function get_all_joueurs(){
-			// $all_joueurs = $this->inst_joueur->get_all_joueurs();
-			// return $all_joueurs;
 		// }
 	}
 }
