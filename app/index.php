@@ -136,11 +136,9 @@ if( ! class_exists( 'Convocations' ) ) {
 		
 		public function admin_menu_convocations() {
 			add_menu_page( __( 'Convocations', 'convocations' ), __( 'Convocations', 'convocations' ), 'manage_convocations', CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ), CONVOCATIONS_URL . 'images/convocations.png', 21);
-			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Toutes les convocations', 'convocations' ), __( 'Toutes les convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ) );
-			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Equipes', 'convocations' ), __( 'Equipes', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-equipe.php', array( &$this->obj_equipe_controller, 'render' ) );
-			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Joueurs', 'convocations' ), __( 'Joueurs', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render_admin_view' ) );
-			// add_submenu_page(__FILE__ , 'Gestion des équipes', 'Gestion des équipes', 'manage_convocations', 'admin-equipes', 'admin_equipes_panel');
-			// add_submenu_page(__FILE__ , 'Gestion des joueurs', 'Gestion des joueurs', 'manage_convocations', 'admin-joueurs', 'admin_joueurs_panel');
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'All convocations', 'convocations' ), __( 'All convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ) );
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Teams', 'convocations' ), __( 'Teams', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-equipe.php', array( &$this->obj_equipe_controller, 'render' ) );
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Players', 'convocations' ), __( 'Players', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render_admin_view' ) );
 		}
 		
 		// public function ajax_convocations() {

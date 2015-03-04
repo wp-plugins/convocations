@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Convocations v0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-03-03 21:10:50+0000\n"
+"PO-Revision-Date: 2015-03-04 00:33:52+0000\n"
 "Last-Translator: superadmin <contact@breizh-seo.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,91 +20,216 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: trunk/app/index.php:100
+#: trunk/app/index.php:102
 #@ manage_convocations
 msgid "Responsable d'équipe"
-msgstr ""
-
-#: app/index.php:136
-#: trunk/app/index.php:136
-#@ convocations
-msgid "Convocations"
-msgstr ""
-
-#: app/index.php:137
-#: trunk/app/index.php:137
-#@ convocations
-msgid "Toutes les convocations"
 msgstr ""
 
 #: app/index.php:138
 #: trunk/app/index.php:138
 #@ convocations
+msgid "Convocations"
+msgstr "Convocations"
+
+#: trunk/app/index.php:139
+#@ convocations
+msgid "Toutes les convocations"
+msgstr ""
+
+#: trunk/app/index.php:140
+#@ convocations
 msgid "Equipes"
 msgstr ""
 
-#: app/index.php:139
-#: trunk/app/index.php:139
+#: trunk/app/index.php:141
 #@ convocations
 msgid "Joueurs"
 msgstr ""
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:11
+#: app/view/admin/convocation/view-admin-edit-convocation.php:10
+#: app/view/admin/equipe/view-admin-edit-equipe.php:10
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:11
+#: trunk/app/view/admin/equipe/view-admin-edit-equipe.php:10
 #@ convocations
 msgid "Updated"
-msgstr ""
+msgstr "Mise à jour"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:18
+#: app/view/admin/convocation/view-admin-edit-convocation.php:17
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:18
 #@ convocations
 msgid "Edit convocation"
 msgstr "Modifier la convocation"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:25
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:25
 #@ convocations
 msgid "Team name"
 msgstr "Nom de l\\'équipe"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:26
+#: app/view/admin/convocation/view-admin-edit-convocation.php:25
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:26
 #@ convocations
 msgid "To change it, change the team name"
 msgstr "Pour le modifier, changer le nom de l\\'équipe"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:30
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:30
 #@ convocations
 msgid "Name of the opposing team"
 msgstr "Nom de l\\'équipe adverse"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:35
+#: app/view/admin/convocation/view-admin-convocation.php:22
+#: app/view/admin/convocation/view-admin-convocation.php:57
+#: app/view/admin/convocation/view-admin-edit-convocation.php:34
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:35
 #@ convocations
 msgid "Date"
 msgstr "Date"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:36
+#: app/view/admin/convocation/view-admin-edit-convocation.php:35
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:36
 #@ convocations
 msgid "Format : Year-Month-Day"
 msgstr "Format : Année-Mois-Jour"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:40
+#: app/view/admin/convocation/view-admin-edit-convocation.php:39
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:40
 #@ convocations
 msgid "Place of appointment"
 msgstr "Lieu du rendez-vous"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:45
+#: app/view/admin/convocation/view-admin-edit-convocation.php:44
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:45
 #@ convocations
 msgid "Home / Outside"
 msgstr "Domicile / Extérieur"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:50
-#: app/view/admin/convocation/view-admin-edit-convocation.php:53
-#: app/view/admin/convocation/view-admin-edit-convocation.php:56
+#: app/view/admin/convocation/view-admin-edit-convocation.php:49
+#: app/view/admin/convocation/view-admin-edit-convocation.php:52
+#: app/view/admin/convocation/view-admin-edit-convocation.php:55
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:50
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:53
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:56
 #@ convocations
 msgid "Home"
 msgstr "Domicile"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:51
-#: app/view/admin/convocation/view-admin-edit-convocation.php:54
-#: app/view/admin/convocation/view-admin-edit-convocation.php:57
+#: app/view/admin/convocation/view-admin-edit-convocation.php:50
+#: app/view/admin/convocation/view-admin-edit-convocation.php:53
+#: app/view/admin/convocation/view-admin-edit-convocation.php:56
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:51
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:54
+#: trunk/app/view/admin/convocation/view-admin-edit-convocation.php:57
 #@ convocations
 msgid "Outside"
 msgstr "Extérieur"
+
+#: app/index.php:139
+#@ convocations
+msgid "All convocations"
+msgstr "Toutes les convocations"
+
+#: app/index.php:140
+#@ convocations
+msgid "Teams"
+msgstr "Equipes"
+
+#: app/index.php:141
+#@ convocations
+msgid "Players"
+msgstr "Joueurs"
+
+#: app/view/admin/convocation/view-admin-convocation.php:10
+#: trunk/app/view/admin/convocation/view-admin-convocation.php:10
+#@ convocations
+msgid "Manage convocations"
+msgstr "Gestion des convocations"
+
+#: app/view/admin/convocation/view-admin-convocation.php:14
+#@ convocations
+msgid "Add a team first"
+msgstr "Ajouter une équipe pour gérer des convocations"
+
+#: app/view/admin/convocation/view-admin-convocation.php:14
+#@ convocations
+msgid "here"
+msgstr "ici"
+
+#: app/view/admin/convocation/view-admin-convocation.php:20
+#: app/view/admin/convocation/view-admin-convocation.php:55
+#: app/view/admin/convocation/view-admin-edit-convocation.php:24
+#: app/view/admin/convocation/view-admin-edit-convocation.php:85
+#: app/view/admin/convocation/view-admin-edit-convocation.php:105
+#@ convocations
+msgid "Team"
+msgstr "Equipe"
+
+#: app/view/admin/convocation/view-admin-convocation.php:21
+#: app/view/admin/convocation/view-admin-convocation.php:56
+#: app/view/admin/convocation/view-admin-edit-convocation.php:29
+#@ convocations
+msgid "Opposing team"
+msgstr "Equipe adverse"
+
+#: app/view/admin/convocation/view-admin-convocation.php:23
+#: app/view/admin/convocation/view-admin-convocation.php:58
+#@ convocations
+msgid "Home/Outside"
+msgstr "Domicile / Extérieur"
+
+#: app/view/admin/convocation/view-admin-convocation.php:24
+#: app/view/admin/convocation/view-admin-convocation.php:59
+#@ convocations
+msgid "Place"
+msgstr "Lieu"
+
+#: app/view/admin/convocation/view-admin-convocation.php:25
+#: app/view/admin/convocation/view-admin-convocation.php:60
+#@ convocations
+msgid "Time"
+msgstr "Heure du RDV"
+
+#: app/view/admin/convocation/view-admin-convocation.php:26
+#: app/view/admin/convocation/view-admin-convocation.php:61
+#: app/view/admin/convocation/view-admin-edit-convocation.php:68
+#@ convocations
+msgid "Time of the game"
+msgstr "Heure du match"
+
+#: app/view/admin/convocation/view-admin-convocation.php:35
+#: app/view/admin/convocation/view-admin-convocation.php:39
+#@ convocations
+msgid "Edit"
+msgstr "Modifier"
+
+#: app/view/admin/convocation/view-admin-convocation.php:39
+#@ convocations
+msgid "Edit this element"
+msgstr "Modifier cet élément"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:63
+#@ convocations
+msgid "Time of the appointment"
+msgstr "Heure du RDV"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:73
+#: app/view/admin/convocation/view-admin-edit-convocation.php:110
+#@ convocations
+msgid "Save"
+msgstr "Mettre à jour"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:78
+#@ convocations
+msgid "Select players"
+msgstr "Sélectionnez des joueurs"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:83
+#: app/view/admin/convocation/view-admin-edit-convocation.php:103
+#@ convocations
+msgid "Select"
+msgstr "Sélection"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:84
+#: app/view/admin/convocation/view-admin-edit-convocation.php:104
+#@ convocations
+msgid "Player"
+msgstr "Joueur"
 
