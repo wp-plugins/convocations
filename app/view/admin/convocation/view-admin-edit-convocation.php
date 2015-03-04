@@ -4,49 +4,57 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) )
 	class Convocation_Admin_Edit_View
 	{
 		public static function render( $convocation, $joueurs ) {
+			
+			if( 1 == $_GET['message'] ){
+				?>
+				<div class="updated">
+					<p><?php _e( 'Updated', 'convocations' ); ?></p>
+				</div>
+				<?php
+			}
 			?>
 			<div class="wrap">
 				<h2>
-					Modifier la convocation
+					<?php _e( 'Edit convocation', 'convocations' ); ?>
 				</h2>
 				<form action="admin-post.php" method="POST">
 					<?php foreach ($convocation as $info) { ?>
 						<table>
 							<tbody>
 								<tr>
-									<td width="300"><label for="nom">Nom de l'équipe : </label></td>
-									<td width="450"><input name="nom" type="text" value="<?php echo $info->equipe ?>" size="50" disabled/><span style="font-style: italic; ">&nbsp;(Ne peut être modifié)</span></td>
+									<td width="300"><label for="nom"><?php _e( 'Team name', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="nom" type="text" value="<?php echo $info->equipe; ?>" size="50" disabled/><span style="font-style: italic; ">&nbsp;(<?php _e( 'To change it, change the team name', 'convocations' ); ?>)</span></td>
 								</tr>
 							
 								<tr>
-									<td width="300"><label for="equipadv">Nom de l'équipe adverse : </label></td>
-									<td width="450"><input name="equipadv" type="text" value="<?php echo $info->equipadv ?>" size="50" /></td>
+									<td width="300"><label for="equipadv"><?php _e( 'Name of the opposing team', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="equipadv" type="text" value="<?php echo $info->equipadv; ?>" size="50" /></td>
 								</tr>
 								
 								<tr>
-									<td width="300"><label for="date">Date : </label></td>
-									<td width="450"><input name="date" id="datepicker" type="text" value="<?php echo $info->date ?>" size="50" /><span style="font-style: italic; ">&nbsp;(Format : Année-Mois-Jour)</span></td>
+									<td width="300"><label for="date"><?php _e( 'Date', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="date" id="datepicker" type="text" value="<?php echo $info->date; ?>" size="50" /><span style="font-style: italic; ">&nbsp;(<?php _e( 'Format : Year-Month-Day', 'convocations' ); ?>)</span></td>
 								</tr>
 								
 								<tr>
-									<td width="300"><label for="lieurdv">Lieu du RDV : </label></td>
-									<td width="450"><input name="lieurdv" type="text" value="<?php echo $info->lieurdv ?>" size="50" /><br /></td>
+									<td width="300"><label for="lieurdv"><?php _e( 'Place of appointment', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="lieurdv" type="text" value="<?php echo $info->lieurdv; ?>" size="50" /><br /></td>
 								</tr>
 								
 								<tr>
-									<td width="300"><label for="domext">Domicile / Extérieur : </label></td>
+									<td width="300"><label for="domext"><?php _e( 'Home / Outside', 'convocations' ); ?>:</label></td>
 									<td width="450">
 										<select name="domext" id="domext">
 											<option value=""></option>
 											<?php if ($info->domext == "Domicile") { ?>
-												<option value="Domicile" selected>Domicile</option>
-												<option value="Extérieur">Extérieur</option>
+												<option value="Domicile" selected><?php _e( 'Home', 'convocations' ); ?></option>
+												<option value="Extérieur"><?php _e( 'Outside', 'convocations' ); ?></option>
 											<?php } elseif ($info->domext == "Extérieur") { ?>
-												<option value="Domicile">Domicile</option>
-												<option value="Extérieur" selected>Extérieur</option>
+												<option value="Domicile"><?php _e( 'Home', 'convocations' ); ?></option>
+												<option value="Extérieur" selected><?php _e( 'Outside', 'convocations' ); ?></option>
 											<?php } else { ?>
-												<option value="Domicile">Domicile</option>
-												<option value="Extérieur">Extérieur</option>
+												<option value="Domicile"><?php _e( 'Home', 'convocations' ); ?></option>
+												<option value="Extérieur"><?php _e( 'Outside', 'convocations' ); ?></option>
 											<?php } ?>
 										</select>
 									</td>

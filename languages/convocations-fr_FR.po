@@ -1,0 +1,110 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Convocations v0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-03-03 21:10:50+0000\n"
+"Last-Translator: superadmin <contact@breizh-seo.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: trunk/app/index.php:100
+#@ manage_convocations
+msgid "Responsable d'équipe"
+msgstr ""
+
+#: app/index.php:136
+#: trunk/app/index.php:136
+#@ convocations
+msgid "Convocations"
+msgstr ""
+
+#: app/index.php:137
+#: trunk/app/index.php:137
+#@ convocations
+msgid "Toutes les convocations"
+msgstr ""
+
+#: app/index.php:138
+#: trunk/app/index.php:138
+#@ convocations
+msgid "Equipes"
+msgstr ""
+
+#: app/index.php:139
+#: trunk/app/index.php:139
+#@ convocations
+msgid "Joueurs"
+msgstr ""
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:11
+#@ convocations
+msgid "Updated"
+msgstr ""
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:18
+#@ convocations
+msgid "Edit convocation"
+msgstr "Modifier la convocation"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:25
+#@ convocations
+msgid "Team name"
+msgstr "Nom de l\\'équipe"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:26
+#@ convocations
+msgid "To change it, change the team name"
+msgstr "Pour le modifier, changer le nom de l\\'équipe"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:30
+#@ convocations
+msgid "Name of the opposing team"
+msgstr "Nom de l\\'équipe adverse"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:35
+#@ convocations
+msgid "Date"
+msgstr "Date"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:36
+#@ convocations
+msgid "Format : Year-Month-Day"
+msgstr "Format : Année-Mois-Jour"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:40
+#@ convocations
+msgid "Place of appointment"
+msgstr "Lieu du rendez-vous"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:45
+#@ convocations
+msgid "Home / Outside"
+msgstr "Domicile / Extérieur"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:50
+#: app/view/admin/convocation/view-admin-edit-convocation.php:53
+#: app/view/admin/convocation/view-admin-edit-convocation.php:56
+#@ convocations
+msgid "Home"
+msgstr "Domicile"
+
+#: app/view/admin/convocation/view-admin-edit-convocation.php:51
+#: app/view/admin/convocation/view-admin-edit-convocation.php:54
+#: app/view/admin/convocation/view-admin-edit-convocation.php:57
+#@ convocations
+msgid "Outside"
+msgstr "Extérieur"
+

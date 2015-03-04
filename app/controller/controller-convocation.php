@@ -17,7 +17,7 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 		}
 		
 		public function render_admin_view() {
-			if( isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) {
+			if( isset( $_GET['action'] ) && 'edit' == $_GET['action'] ) {
 				$this->render_admin_edit_view();
 			}
 			else {
@@ -32,13 +32,23 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 		}
 		
 		public function admin_edit_convocation() {
-			$id 		= $_POST['id'];
-			$equipadv 	= $_POST['equipadv'];
+			$args = array(
+				'id'			=> intval( $_POST['id'] ),
+				'equipadv'		=> sanitize_text_field( $_POST['equipadv'] ),
+				'date'			=> $_POST['date'],
+				'domext'		=> sanitize_text_field( $_POST['domext'] ),
+				'lieurdv'		=> sanitize_text_field( $_POST['lieurdv'] ),
+				'heurerdv' 		=> sanitize_text_field( $_POST['heurerdv'] ),
+				'heurematch'	=> sanitize_text_field( $_POST['heurematch'] ),
+				'arrJoueurs'	=> $_POST['selectionnes']
+			);
+			$id 		= intval( $_POST['id'] );
+			$equipadv 	= sanitize_text_field( $_POST['equipadv'] );
 			$date 		= $_POST['date'];
-			$domext 	= $_POST['domext'];
-			$lieurdv 	= $_POST['lieurdv'];
-			$heurerdv 	= $_POST['heurerdv'];
-			$heurematch = $_POST['heurematch'];
+			$domext 	= sanitize_text_field( $_POST['domext'] );
+			$lieurdv 	= sanitize_text_field( $_POST['lieurdv'] );
+			$heurerdv 	= sanitize_text_field( $_POST['heurerdv'] );
+			$heurematch = sanitize_text_field( $_POST['heurematch'] );
 			$arrJoueurs = $_POST['selectionnes'];
 			
 			$this->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
@@ -47,10 +57,10 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 				wp_redirect(
 					add_query_arg(
 						array(
-							'page'	=>	'convocations/app/controller/controller-convocation.php',
-							'action'=>	'edit',
-							'id'	=>	'1',
-							'save'	=>	'true'
+							'page'		=>	'convocations/app/controller/controller-convocation.php',
+							'id'		=>	intval( $_POST['id'] ),
+							'action'	=>	'edit',
+							'message'	=>	'1'
 						),
 						admin_url( 'admin.php' )
 					)

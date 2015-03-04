@@ -8,7 +8,7 @@ if( !class_exists( 'Joueur_Admin_View' ) )
 			<div class="wrap">
 				<h2>
 					Gestion des joueurs
-					<a class="add-new-h2" href="admin.php?page=admin-joueurs&action=add">Ajouter</a>
+					<a class="add-new-h2" href="admin.php?page=convocations/app/controller/controller-joueur.php&action=new">Ajouter</a>
 				</h2>
 				<form action="admin-post.php" method="GET" >
 					<div class="tablenav top">
@@ -35,7 +35,6 @@ if( !class_exists( 'Joueur_Admin_View' ) )
 							<th class="manage-column" width="25%">Prénom</th>
 							<th class="manage-column" width="15%">Poste</th>
 							<th class="manage-column" width="25%">Equipe</th>
-							<th class="manage-column" width="10%">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,7 +44,6 @@ if( !class_exists( 'Joueur_Admin_View' ) )
 							<td><?php echo $joueur->prenom ?></td>
 							<td><?php echo $joueur->poste ?></td>
 							<td><?php echo $joueur->equipe ?></td>
-							<td><a href="admin.php?page=admin-joueurs&id=<?php echo $joueur->id ?>&action=del" title="Effacer le joueur"><img src ="<?php echo CONVOCATIONS_URL ?>/images/remove.png" alt="Effacer le joueur" /></a></td>
 						</tr>
 					<?php }  ?>
 					</tbody>
@@ -55,7 +53,6 @@ if( !class_exists( 'Joueur_Admin_View' ) )
 							<th class="manage-column" width="25%">Prénom</th>
 							<th class="manage-column" width="15%">Poste</th>
 							<th class="manage-column" width="25%">Equipe</th>
-							<th class="manage-column" width="10%">Actions</th>
 						</tr>
 					</tfoot>
 				</table>

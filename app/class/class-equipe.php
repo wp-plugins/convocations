@@ -37,7 +37,7 @@ if( ! class_exists( 'Equipe' ) ) {
 							'entrainement' => $entrainement
 						)
 				);
-				return true;
+				return $wpdb->insert_id;
 			} else {
 				return false;
 			}

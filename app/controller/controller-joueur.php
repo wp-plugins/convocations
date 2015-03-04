@@ -49,10 +49,10 @@ if( ! class_exists( 'Joueur_Controller' ) ) {
 				wp_redirect(
 					add_query_arg(
 						array(
-							'page'	=>	'convocations/app/controller/controller-joueur.php',
-							'action'=>	'edit',
-							'id'	=>	'1',
-							'save'	=>	'true'
+							'page'		=>	'convocations/app/controller/controller-joueur.php',
+							'id'		=>	intval( $_POST['id'] ),
+							'action'	=>	'edit',
+							'message'	=>	'1'
 						),
 						admin_url( 'admin.php' )
 					)
