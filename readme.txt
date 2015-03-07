@@ -66,7 +66,7 @@ A lot of bug are fixed !
 = 0.5 =
 * Fix function prepare warning
 
-= 1.0 =
+= 0.6 =
 * Major update :  Overhaul of the plugin structure with POO
 * Add languages support
 * Fix warning for wpdb::prepare
