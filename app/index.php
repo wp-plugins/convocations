@@ -1,14 +1,37 @@
 <?php
 if( ! class_exists( 'Convocations' ) ) {
 	
+	/**
+	 * Main controller for the plugin
+	 */
 	class Convocations {
 		
+		/**
+		 *
+		 */
 		private $obj_convocation_controller;
+		
+		/**
+		 *
+		 */
+		private $obj_equipe_controller;
+		
+		/**
+		 *
+		 */
 		private $obj_joueur_controller;
+		
+		/**
+		 *
+		 */
 		private $convocations_db_version;
 		
+		/**
+		 *
+		 */
 		public function __construct() {
-			load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
+			// Load languages
+			// load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
 			
 			// Includes
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php' );
@@ -39,6 +62,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			// Add a shortcode to display Convocations in front-end
 			add_shortcode( 'convocations', array( &$this, 'add_shortcode' ) );
 			
+			// Add action to catch ajax requests from the front
 			add_action( 'wp_ajax_displayNext', array( &$this, 'display_next' ) );
 			add_action( 'wp_ajax_nopriv_displayNext', array( &$this, 'display_next' ) );
 			
@@ -51,14 +75,23 @@ if( ! class_exists( 'Convocations' ) ) {
 		
 		/* INSTALL */
 		
+		/**
+		 * Set tables for the plugin in the database and create/manage capabilities to use the plugin
+		 */
 		public function activation() {
 			$this->install_db();
 			$this->set_capabilities();
 		}
 		
+		/**
+		 * Set tables for the plugin in the database
+		 */
 		public function install_db() {
 			global $wpdb;
+			
 			$sql = '';
+			
+			// Table for the convocations
 			$sql .= "CREATE TABLE ". CONVOCATIONS_TBL_CONVOCATIONS ." (";
 			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
 			$sql .= "`equipe` text NOT NULL,";
@@ -71,6 +104,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			$sql .= "PRIMARY KEY (`id`))";
 			$sql .= "ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			
+			// Table for the teams
 			$sql .= "CREATE TABLE ". CONVOCATIONS_TBL_TEAMS ." (";
 			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
 			$sql .= "`nom` text NOT NULL,";
@@ -80,6 +114,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			$sql .= "PRIMARY KEY (`id`))";
 			$sql .= "ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			
+			// Table for the players
 			$sql .= "CREATE TABLE ". CONVOCATIONS_TBL_PLAYERS ." (";
 			$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
 			$sql .= "`nom` text NOT NULL,";
@@ -93,9 +128,14 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 			dbDelta($sql);
+			
+			// Set option for the db version
 			update_option( 'convocations_db_version', $this->convocations_db_version );
 		}
 		
+		/**
+		 * Create/manage capabilities to use the plugin
+		 */
 		public function set_capabilities() {
 			// Add a capability for Administrator to managing Convocations
 			$role = get_role( 'administrator' );
@@ -112,20 +152,29 @@ if( ! class_exists( 'Convocations' ) ) {
 		
 		/* UPDATE */
 		
+		/**
+		 * Check the version of the database and update if it's necessary
+		 */
+		public function check_db_update() {
+			if( get_site_option( 'convocations_db_version' ) != $this->convocations_db_version ){
+				$this->update_db();
+				update_option( 'convocations_db_version', $this->convocations_db_version );
+			}
+		}
+		
+		/**
+		 * Use to update the database if it's necessary
+		 */
 		public function update_db() {
 			// Version 0.3
 			// TO DO
 		}
 		
-		public function check_db_update() {
-			if( get_site_option( 'convocations_db_version' ) != $this->convocations_db_version ){
-				$this->update_db();
-				add_option( 'convocations_db_version', $this->convocations_db_version );
-			}
-		}
-		
 		/* INIT */
 		
+		/**
+		 * Initiate the variable ajaxurl for the ajax requests
+		 */
 		public function pluginname_ajaxurl() {
 			?>
 			<script type="text/javascript">
@@ -134,30 +183,53 @@ if( ! class_exists( 'Convocations' ) ) {
 			<?php
 		}
 		
+		/**
+		 * Load some JS and CSS useful for the plugin
+		 */
 		public function add_scripts() {
 			// JS
+			wp_register_script( 'jquery-ui-timepicker', CONVOCATIONS_LIBS_URL . 'js/jquery-timepicker/jquery.timepicker.min.js' );
+			wp_register_script( 'convocations', CONVOCATIONS_LIBS_URL . 'js/convocations.js' );
+			
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core', array( 'jquery' ) );
 			wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery', 'jquery-ui-core' ) );
-			wp_register_script( 'convocations', CONVOCATIONS_LIBS_URL . 'js/convocations.js' );
+			wp_enqueue_script( 'jquery-ui-timepicker', array( 'jquery', 'jquery-ui-core' ) );
 			wp_enqueue_script( 'convocations' );
 			
 			// CSS
 			wp_enqueue_style( 'jquery.ui.theme', CONVOCATIONS_LIBS_URL . '/css/jquery-ui-1.8.23.custom.css' );
+			wp_enqueue_style( 'jquery.ui.timepicker', CONVOCATIONS_LIBS_URL . '/css/jquery.timepicker.css' );
 		}
 		
+		/**
+		 * Load the administration menu for the plugin
+		 */
 		public function admin_menu_convocations() {
-			add_menu_page( __( 'Convocations', 'convocations' ), __( 'Convocations', 'convocations' ), 'manage_convocations', CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ), CONVOCATIONS_URL . 'images/convocations.png', 21);
-			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'All convocations', 'convocations' ), __( 'All convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ) );
+			// Main menu
+			add_menu_page( __( 'Convocations', 'convocations' ), __( 'Convocations', 'convocations' ), 'manage_convocations', CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render' ), CONVOCATIONS_URL . 'images/convocations.png', 21);
+			
+			// Submenu to manage convocations
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'All convocations', 'convocations' ), __( 'All convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render' ) );
+			
+			// Submenu to manage teams
 			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Teams', 'convocations' ), __( 'Teams', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-equipe.php', array( &$this->obj_equipe_controller, 'render' ) );
+			
+			// Submenu to manage players
 			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Players', 'convocations' ), __( 'Players', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render' ) );
 		}
 		
+		/**
+		 * Create the shortcode "convocations"
+		 */
 		public function add_shortcode() {
 			require_once( CONVOCATIONS_APP_PATH . 'view/front/display_html.php' );
 			return displayConvocations( $this->obj_convocation_controller->get_all_convocations() );
 		}
 		
+		/**
+		 * Display the result of the ajax request from the front
+		 */
 		public function display_next() {
 			$convocation = $this->obj_convocation_controller->get_convocation($_POST['value']);
 			$joueurs = $this->obj_joueur_controller->get_joueurs_by_equipe($convocation->equipe);
@@ -193,7 +265,8 @@ if( ! class_exists( 'Convocations' ) ) {
 		}
 	}
 }
-if ( class_exists( 'Convocations' ) ){
+
+if ( class_exists( 'Convocations' ) ) {
 	$inst_convocations = new Convocations();
 	register_activation_hook( __FILE__, array( &$inst_convocations, 'activation' ) );
 	register_deactivation_hook( __FILE__, array( &$inst_convocations, 'deactivation' ) );

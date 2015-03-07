@@ -1,6 +1,6 @@
 <?php
-if( !class_exists( 'Convocation_Admin_Edit_View' ) )
-{
+if( !class_exists( 'Convocation_Admin_Edit_View' ) ) {
+	
 	class Convocation_Admin_Edit_View
 	{
 		public static function render( $convocation, $joueurs ) {
@@ -67,12 +67,12 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) )
 							
 							<tr>
 								<td width="300"><label for="heurerdv"><?php _e( 'Time of the appointment', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="heurerdv" type="time" value="<?php echo $convocation->heurerdv; ?>" size="50" /><br /></td>
+								<td width="450"><input name="heurerdv" id="heurerdv" type="text" value="<?php echo $convocation->heurerdv; ?>" size="8" /><br /></td>
 							</tr>
 							
 							<tr>
 								<td width="300"><label for="heurematch"><?php _e( 'Time of the game', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="heurematch" type="time" value="<?php echo $convocation->heurematch; ?>" size="50" /><br /></td>
+								<td width="450"><input name="heurematch" id="heuremacth" type="text" value="<?php echo $convocation->heurematch; ?>" size="8" /><br /></td>
 							</tr>
 						</tbody>
 					</table>

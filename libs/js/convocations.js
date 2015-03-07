@@ -9,7 +9,15 @@ jQuery(document).ready(function($){
 		monthNamesMin: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
 		monthNamesShort: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
 		changeYear: true,
-		yearRange: "c-10:c+10"
+		yearRange: "c-10:c+10",
+		firstDay: 1
+	});
+	
+	$("#heurerdv").timepicker({
+		'timeFormat' : 'H:i'
+	});
+	$("#heuremacth").timepicker({
+		'timeFormat' : 'H:i'
 	});
 	
 	$("#select-convocation select").live("change", function() {

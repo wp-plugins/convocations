@@ -1,16 +1,22 @@
 <?php
 if( ! class_exists( 'Convocation' ) ) {
 	
+	/**
+	 * 
+	 */
 	class Convocation {
 		
-		public function __construct() {
-			
+		/**
+		 * Constructor
+		 */
+		public function __construct() {	
 		}
 		
 		/**
 		 * Insert a new convocation in the database
 		 *
-		 * @param nom Name of the convocation
+		 * @param name Name of the convocation
+		 * @return int $wpdb->insert_id ID of the insertion in the database
 		 */
 		public function insert_convocation( $name ) {
 			global $wpdb;
@@ -22,8 +28,22 @@ if( ! class_exists( 'Convocation' ) ) {
 						'date' 		=> date_i18n('Y-m-d')
 				)
 			);
+			
+			return $wpdb->insert_id;
 		}
 		
+		/**
+		 * Update a convocation in the database
+		 *
+		 * @param int id			ID of the convocation to update
+		 * @param string equipadv	Name of the opposing team
+		 * @param datetime date		Date of the convocation
+		 * @param string domext		Home/Outside option of the convocation
+		 * @param string lieurdv	Place of the appointment
+		 * @param string heurerdv	Time of the appointment
+		 * @param string heurematch	Time of the game
+		 * @param array arrJoueurs	List of the players selected for the convocation
+		 */
 		public function update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs ){
 			global $wpdb;
 			
@@ -81,7 +101,7 @@ if( ! class_exists( 'Convocation' ) ) {
 			$wpdb->query($sql);
 		}
 		
-		public function get_convocation( $the_convocation ){
+		public function get_convocation( $id ){
 			global $wpdb;
 			
 			$sql = $wpdb->prepare(
@@ -90,7 +110,7 @@ if( ! class_exists( 'Convocation' ) ) {
 								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
 								WHERE id = %d
 								',
-								array( $the_convocation )
+								array( $id )
 					);
 			
 			$convocation = $wpdb->get_row($sql);
@@ -101,8 +121,13 @@ if( ! class_exists( 'Convocation' ) ) {
 		public function get_all_convocations(){
 			global $wpdb;
 			
-			$table_name = $wpdb->prefix . 'convocations';
-			$sql = $wpdb->prepare('SELECT * FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' ORDER BY equipe ASC', array() );
+			$sql = $wpdb->prepare(
+								'SELECT * 
+								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
+								ORDER BY equipe ASC', 
+								array()
+					);
+			
 			$all_convocations = $wpdb->get_results($sql);
 			
 			return $all_convocations;

@@ -33,7 +33,8 @@ The notifications are related teams. It is therefore necessary to create a team 
 
 == Screenshots ==
 
-1. Management convocations
+1. All convocations
+2. Manage convocation
 
 == Changelog ==
 
@@ -60,7 +61,13 @@ The notifications are related teams. It is therefore necessary to create a team 
 Using shortocode to display in front-end !
 
 = 0.4 =
-A lot of bug are fixed !!
+A lot of bug are fixed !
 
 = 0.5 =
 * Fix function prepare warning
+
+= 1.0 =
+* Major update :  Overhaul of the plugin structure with POO
+* Add languages support
+* Fix warning for wpdb::prepare
+* Add timepicker on the edition of a convocation
