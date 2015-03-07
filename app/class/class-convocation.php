@@ -24,8 +24,8 @@ if( ! class_exists( 'Convocation' ) ) {
 			$wpdb->insert(
 				CONVOCATIONS_TBL_CONVOCATIONS,
 				array(
-						'equipe' 	=> $name,
-						'date' 		=> date_i18n('Y-m-d')
+					'equipe' 	=>	$name,
+					'date' 		=>	date_i18n('Y-m-d')
 				)
 			);
 			
@@ -63,7 +63,7 @@ if( ! class_exists( 'Convocation' ) ) {
 			);
 			
 			$wpdb->update(
-				CONVOCATIONS_TBL_CONVOCATIONS,
+				CONVOCATIONS_TBL_PLAYERS,
 				array(
 						'numconvocation'	=> '-1'
 				),
