@@ -23,7 +23,7 @@ Convocations plugin is for sports associations such as football clubs, handball 
 
 1. Extract `convocations.zip` and upload `convocations` to the `/wp-content/plugins/` folder
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Place this shortcode `[convocations]` into a page or place this PHP code `<?php if (function_exists('displayConvocations')) { displayConvocations(); } ?>` into the template files.
+3. Place this shortcode `[convocations]` into a page.
 
 == Frequently Asked Questions ==
 
