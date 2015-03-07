@@ -31,7 +31,7 @@ if( ! class_exists( 'Convocations' ) ) {
 		 */
 		public function __construct() {
 			// Load languages
-			// load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
+			load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
 			
 			// Includes
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php' );
