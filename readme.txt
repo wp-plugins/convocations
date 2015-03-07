@@ -3,8 +3,8 @@ Contributors: breizh_seo
 Donate link: http://www.breizh-seo.com/
 Tags: convocation, sport
 Requires at least: 3.0
-Tested up to: 3.4.2
-Stable tag: 0.5
+Tested up to: 4.1.1
+Stable tag: 0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,15 @@ The notifications are related teams. It is therefore necessary to create a team 
 = 0.4 =
 * Fix the front-end display in IE9
 
+= 0.5 =
+* Fix function prepare warning
+
+= 0.6 =
+* Major update :  Overhaul of the plugin structure with POO
+* Add languages support
+* Fix warning for wpdb::prepare
+* Add timepicker on the edition of a convocation
+
 == Upgrade Notice ==
 
 = 0.3 =
@@ -64,10 +73,10 @@ Using shortocode to display in front-end !
 A lot of bug are fixed !
 
 = 0.5 =
-* Fix function prepare warning
+Fix function prepare warning
 
 = 0.6 =
-* Major update :  Overhaul of the plugin structure with POO
-* Add languages support
-* Fix warning for wpdb::prepare
-* Add timepicker on the edition of a convocation
+Major update :  Overhaul of the plugin structure with POO
+Add languages support
+Fix warning for wpdb::prepare
+Add timepicker on the edition of a convocation
