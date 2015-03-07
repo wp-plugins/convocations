@@ -8,7 +8,7 @@ if( ! class_exists( 'Convocations' ) ) {
 		private $convocations_db_version;
 		
 		public function __construct() {
-			load_plugin_textdomain( 'convocations', false, CONVOCATIONS_PATH .'languages/' );
+			load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
 			
 			// Includes
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php' );
@@ -34,9 +34,13 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			// Add some js in front
 			add_action( 'wp_head', array( &$this, 'add_scripts' ) );
+			add_action( 'wp_head',array( &$this, 'pluginname_ajaxurl' ) );
 			
 			// Add a shortcode to display Convocations in front-end
 			add_shortcode( 'convocations', array( &$this, 'add_shortcode' ) );
+			
+			add_action( 'wp_ajax_displayNext', array( &$this, 'display_next' ) );
+			add_action( 'wp_ajax_nopriv_displayNext', array( &$this, 'display_next' ) );
 			
 			// Init objects
 			$this->obj_convocation_controller = new Convocation_Controller();
@@ -99,7 +103,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			// Add a role and a capability for managing Convocations
 			add_role( 
-				'responsable_equipe', __('Responsable d\'équipe', 'manage_convocations'),
+				'responsable_equipe', __('Team manager', 'convocations'),
 				array(
 					'read'                => 1,
 					'manage_convocations' => 1
@@ -122,6 +126,14 @@ if( ! class_exists( 'Convocations' ) ) {
 		
 		/* INIT */
 		
+		public function pluginname_ajaxurl() {
+			?>
+			<script type="text/javascript">
+				var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+			</script>
+			<?php
+		}
+		
 		public function add_scripts() {
 			// JS
 			wp_enqueue_script( 'jquery' );
@@ -138,84 +150,47 @@ if( ! class_exists( 'Convocations' ) ) {
 			add_menu_page( __( 'Convocations', 'convocations' ), __( 'Convocations', 'convocations' ), 'manage_convocations', CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ), CONVOCATIONS_URL . 'images/convocations.png', 21);
 			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'All convocations', 'convocations' ), __( 'All convocations', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', array( &$this->obj_convocation_controller, 'render_admin_view' ) );
 			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Teams', 'convocations' ), __( 'Teams', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-equipe.php', array( &$this->obj_equipe_controller, 'render' ) );
-			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Players', 'convocations' ), __( 'Players', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render_admin_view' ) );
+			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Players', 'convocations' ), __( 'Players', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render' ) );
 		}
 		
-		// public function ajax_convocations() {
+		public function add_shortcode() {
+			require_once( CONVOCATIONS_APP_PATH . 'view/front/display_html.php' );
+			return displayConvocations( $this->obj_convocation_controller->get_all_convocations() );
+		}
+		
+		public function display_next() {
+			$convocation = $this->obj_convocation_controller->get_convocation($_POST['value']);
+			$joueurs = $this->obj_joueur_controller->get_joueurs_by_equipe($convocation->equipe);
 			
-			// global $wpdb;
-				
-			// $tablename = $wpdb->prefix . 'convocations_joueurs';
-			// $tablename2 = $wpdb->prefix . 'convocations';
-			// $sql_joueurs = $wpdb->prepare(
-										// '
-										// SELECT * 
-										// FROM ' .$tablename. ' 
-										// INNER JOIN '. $tablename2 .' ON '. $tablename2 .'.id = ' .$tablename. '.numconvocation 
-										// WHERE ' .$tablename. '.numconvocation = %d 
-										// ORDER BY ' .$tablename. '.nom ASC
-										// ',
-										// array( $_POST['lequipe'] )
-								// );
-				
-			// $joueurs = $wpdb->get_results($sql_joueurs);
+			$html = '';
 			
-			// $html = '';
+			if( count( $joueurs ) != 0 ){
+				setlocale(LC_TIME, "fr_FR", "fr_FR@euro", "fr", "FR", "fra_fra", "fra");
+				$html .= '<h2>'. $convocation->equipe .' - Match contre '. $convocation->equipadv .'</h2>';
+				$html .= '<p>';
+				$html .= 'Les joueurs de l\'Ã©quipe sont convoquÃ©s le ';
+				$html .= '<strong>'. utf8_encode(strftime("%A %d %B %Y", strtotime($convocation->date))) .'</strong> ';
+				$html .= 'Ã  <strong>'. $convocation->heurerdv .'</strong><br /> ';
+				$html .= 'Le lieu du rendez-vous est : '. $convocation->lieurdv .'<br />';
+				$html .= 'Le match dÃ©butera Ã  '. $convocation->heurematch .'';
+				$html .= '</p>';
+				$html .= '<h3>Liste des joueurs convoquÃ©s :</h3>';
+				$html .= '<p>';
 			
-			// if( count( $joueurs ) != 0 ){
-				// setlocale(LC_TIME, "fr_FR", "fr_FR@euro", "fr", "FR", "fra_fra", "fra");
-				// $html .= '<h2>'. $joueurs[0]->equipe .' - Match contre '. $joueurs[0]->equipadv .'</h2>';
-				// $html .= '<p>';
-				// $html .= 'Les joueurs de l\'équipe sont convoqués le ';
-				// $html .= '<strong>'. utf8_encode(strftime("%A %d %B %Y", strtotime($joueurs[0]->date))) .'</strong> ';
-				// $html .= 'à <strong>'. $joueurs[0]->heurerdv .'</strong><br /> ';
-				// $html .= 'Le lieu du rendez-vous est : '. $joueurs[0]->lieurdv .'<br />';
-				// $html .= 'Le match débutera à '. $joueurs[0]->heurematch .'';
-				// $html .= '</p>';
-				// $html .= '<h3>Liste des joueurs convoqués :</h3>';
-				// $html .= '<p>';
-			
-				// foreach ( $joueurs as $joueur ) {
-					// $html .= $joueur->nom .' '. ucfirst(strtolower($joueur->prenom)) .'<br>';
-				// }
+				foreach ( $joueurs as $joueur ) {
+					$html .= $joueur->nom .' '. ucfirst(strtolower($joueur->prenom)) .'<br>';
+				}
 				
-				// $html .= '</p>';
+				$html .= '</p>';
 				
-				// echo $html;
-			// }
-			// else {
-				// $html .= '<p>Aucun joueur n\'a été affecté à ce match pour le moment</p>';
-				// echo $html;
-			// }
-			// die();
-		// }
-		
-		// public function add_shortcode() {
-			// return displayConvocations();
-		// }
-		
-		// public function insert_equipe( $nom, $responsable, $telephone, $entrainement ){
-			// $insert = $this->inst_equipe->insert_equipe( $nom, $responsable, $telephone, $entrainement );
-			// return $insert;
-		// }
-		
-		// public function update_equipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement ){
-			// $this->inst_equipe->update_equipe( $id, $old_name, $nom, $responsable, $telephone, $entrainement );
-		// }
-		
-		// public function delete_equipe( $id ){
-			// $this->inst_equipe->delete_equipe( $id );
-		// }
-		
-		// public function get_equipe( $the_equipe_id ){
-			// $equipe = $this->inst_equipe->get_equipe( $the_equipe_id );
-			// return $equipe;
-		// }
-		
-		// public function get_all_equipes(){
-			// $all_equipes = $this->inst_equipe->get_all_equipes();
-			// return $all_equipes;
-		// }
+				echo $html;
+			}
+			else {
+				$html .= '<p>Aucun joueur n\'a Ã©tÃ© affectÃ© Ã  ce match pour le moment</p>';
+				echo $html;
+			}
+			die();
+		}
 	}
 }
 if ( class_exists( 'Convocations' ) ){

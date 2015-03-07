@@ -27,9 +27,8 @@ if( ! class_exists( 'Convocation' ) ) {
 		public function update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs ){
 			global $wpdb;
 			
-			$table_name = $wpdb->prefix . 'convocations';
 			$wpdb->update(
-				$table_name,
+				CONVOCATIONS_TBL_CONVOCATIONS,
 				array(
 						'equipadv'	=> $equipadv,
 						'date'		=> $date,
@@ -43,9 +42,8 @@ if( ! class_exists( 'Convocation' ) ) {
 				)
 			);
 			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
 			$wpdb->update(
-				$table_name,
+				CONVOCATIONS_TBL_CONVOCATIONS,
 				array(
 						'numconvocation'	=> '-1'
 				),
@@ -57,7 +55,7 @@ if( ! class_exists( 'Convocation' ) ) {
 			if(!empty($arrJoueurs)) {
 				foreach ($arrJoueurs as $joueur) {
 					$wpdb->update(
-						$table_name,
+						CONVOCATIONS_TBL_PLAYERS,
 						array(
 								'numconvocation'	=> $id
 						),
@@ -72,11 +70,10 @@ if( ! class_exists( 'Convocation' ) ) {
 		public function delete_convocation( $the_equipe ){
 			global $wpdb;
 			
-			$table_name = $wpdb->prefix . 'convocations';
 			$sql = $wpdb->prepare(
 								'
 								DELETE 
-								FROM ' . $table_name . ' 
+								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
 								WHERE equipe = %s
 								',
 								array( $the_equipe )
@@ -86,17 +83,17 @@ if( ! class_exists( 'Convocation' ) ) {
 		
 		public function get_convocation( $the_convocation ){
 			global $wpdb;
-			$table_name = $wpdb->prefix . 'convocations';
+			
 			$sql = $wpdb->prepare(
 								'
 								SELECT * 
-								FROM ' . $table_name . ' 
+								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
 								WHERE id = %d
 								',
 								array( $the_convocation )
 					);
 			
-			$convocation = $wpdb->get_results($sql);
+			$convocation = $wpdb->get_row($sql);
 			
 			return $convocation;
 		}
@@ -105,7 +102,7 @@ if( ! class_exists( 'Convocation' ) ) {
 			global $wpdb;
 			
 			$table_name = $wpdb->prefix . 'convocations';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $table_name . ' ORDER BY equipe ASC', array() );
+			$sql = $wpdb->prepare('SELECT * FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' ORDER BY equipe ASC', array() );
 			$all_convocations = $wpdb->get_results($sql);
 			
 			return $all_convocations;

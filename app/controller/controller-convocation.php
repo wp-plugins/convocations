@@ -17,7 +17,7 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 		}
 		
 		public function render_admin_view() {
-			if( isset( $_GET['action'] ) && 'edit' == $_GET['action'] ) {
+			if( isset( $_GET['action'] ) && 'edit' == $_GET['action'] && isset( $_GET['id'] ) ) {
 				$this->render_admin_edit_view();
 			}
 			else {
@@ -28,30 +28,85 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 		
 		public function render_admin_edit_view() {
 			require_once( CONVOCATIONS_APP_PATH.'view/admin/convocation/view-admin-edit-convocation.php' );
-			Convocation_Admin_Edit_View::render( $this->get_convocation( $_GET['id'] ), $this->obj_joueurs->get_all_joueurs() );
+			Convocation_Admin_Edit_View::render( $this->get_convocation( intval( $_GET['id'] ) ), $this->obj_joueurs->get_all_joueurs() );
 		}
 		
 		public function admin_edit_convocation() {
-			$args = array(
-				'id'			=> intval( $_POST['id'] ),
-				'equipadv'		=> sanitize_text_field( $_POST['equipadv'] ),
-				'date'			=> $_POST['date'],
-				'domext'		=> sanitize_text_field( $_POST['domext'] ),
-				'lieurdv'		=> sanitize_text_field( $_POST['lieurdv'] ),
-				'heurerdv' 		=> sanitize_text_field( $_POST['heurerdv'] ),
-				'heurematch'	=> sanitize_text_field( $_POST['heurematch'] ),
-				'arrJoueurs'	=> $_POST['selectionnes']
-			);
-			$id 		= intval( $_POST['id'] );
-			$equipadv 	= sanitize_text_field( $_POST['equipadv'] );
-			$date 		= $_POST['date'];
-			$domext 	= sanitize_text_field( $_POST['domext'] );
-			$lieurdv 	= sanitize_text_field( $_POST['lieurdv'] );
-			$heurerdv 	= sanitize_text_field( $_POST['heurerdv'] );
-			$heurematch = sanitize_text_field( $_POST['heurematch'] );
-			$arrJoueurs = $_POST['selectionnes'];
+			$error = array();
 			
-			$this->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
+			foreach( $_POST as $key => $value ) {
+				switch( $key ){
+					case 'id':
+						if( isset( $_POST['id'] ) && '' != $_POST['id'] ) {
+							$id = intval( $_POST['id'] );
+						}
+						else {
+							$error['id'] = __( 'ID missing', 'convocations' );
+						}
+						break;
+					case 'equipadv':
+						if( isset( $_POST['equipadv'] ) && '' != $_POST['equipadv'] ) {
+							$equipadv = sanitize_text_field( $_POST['equipadv'] );
+						}
+						else {
+							$error['equipadv'] = __( 'Oppositing team missing', 'convocations' );
+						}
+						break;
+					case 'date':
+						if( isset( $_POST['date'] ) && '' != $_POST['date'] ) {
+							$date = sanitize_text_field( $_POST['date'] );
+						}
+						else {
+							$error['date'] = __( 'Date missing', 'convocations' );
+						}
+						break;
+					case 'domext':
+						if( isset( $_POST['domext'] ) && '' != $_POST['domext'] ) {
+							$domext = sanitize_text_field( $_POST['domext'] );
+						}
+						else {
+							$error['domext'] = __( 'Home/Outside missing', 'convocations' );
+						}
+						break;
+					case 'lieurdv':
+						if( isset( $_POST['lieurdv'] ) && '' != $_POST['lieurdv'] ) {
+							$lieurdv = sanitize_text_field( $_POST['lieurdv'] );
+						}
+						else {
+							$error['lieurdv'] = __( 'Place of the appointment missing', 'convocations' );
+						}
+						break;
+					case 'heurerdv':
+						if( isset( $_POST['heurerdv'] ) && '' != $_POST['heurerdv'] ) {
+							$heurerdv = sanitize_text_field( $_POST['heurerdv'] );
+						}
+						else {
+							$error['heurerdv'] = __( 'Time of the appointment missing', 'convocations' );
+						}
+						break;
+					case 'heurematch':
+						if( isset( $_POST['heurematch'] ) && '' != $_POST['heurematch'] ) {
+							$heurematch = sanitize_text_field( $_POST['heurematch'] );
+						}
+						else {
+							$error['heurematch'] = __( 'Time of the game missing', 'convocations' );
+						}
+						break;
+					case 'selectionnes':
+						if( isset( $_POST['selectionnes'] ) ) {
+							$arrJoueurs = $_POST['selectionnes'];
+						}
+						break;
+				}
+			}
+			
+			if( empty( $error ) ) {
+				$this->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
+				$message = 1;
+			}
+			else {
+				$message = 2;
+			}
 			
 			if( form_is_validated ) {
 				wp_redirect(
@@ -60,7 +115,7 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 							'page'		=>	'convocations/app/controller/controller-convocation.php',
 							'id'		=>	intval( $_POST['id'] ),
 							'action'	=>	'edit',
-							'message'	=>	'1'
+							'message'	=>	$message
 						),
 						admin_url( 'admin.php' )
 					)
@@ -73,7 +128,6 @@ if( ! class_exists( 'Convocation_Controller' ) ) {
 		}
 		
 		public function update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs ) {
-			
 			$this->obj_convocations->update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs );
 		}
 		

@@ -12,6 +12,7 @@ Author URI: http://www.breizh-seo.com/
 define( 'CONVOCATIONS_VERSION', '0.6' );
 define( 'CONVOCATIONS_FILE', basename(__FILE__) );
 define( 'CONVOCATIONS_PATH', plugin_dir_path(__FILE__) );
+define( 'CONVOCATIONS_DIR', dirname( plugin_basename( __FILE__ ) ) );
 define( 'CONVOCATIONS_APP_PATH', CONVOCATIONS_PATH. 'app/');
 define( 'CONVOCATIONS_LIBS_PATH', CONVOCATIONS_PATH. 'libs/' );
 

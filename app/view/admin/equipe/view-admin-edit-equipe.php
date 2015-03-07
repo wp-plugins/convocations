@@ -14,31 +14,31 @@ if( !class_exists( 'Equipe_Admin_Edit_View' ) )
 			?>
 			<div class="wrap">
 				<h2>
-					Modifier l'équipe
-					<a class="add-new-h2" href="admin.php?page=admin-equipes&action=add">Ajouter</a>
+					<?php _e( 'Edit team', 'convocations' ); ?>
+					<a class="add-new-h2" href="admin.php?page=convocations/app/controller/controller-equipe.php&action=new"><?php _e( 'Add', 'convocations' ); ?></a>
 				</h2>
 				<form action="admin-post.php" method="POST">
 					<?php foreach( $equipe as $info ) { ?>
 						<table>
 							<tbody>
 								<tr>
-									<td width="300"><label for="nom">Nom de l'équipe : </label></td>
-									<td width="450"><input name="nom" type="text" value="<?php echo $info->nom ?>" size="50" /></td>
+									<td width="300"><label for="nom"><?php _e( 'Name', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="nom" type="text" value="<?php echo $info->nom; ?>" size="50" /></td>
 								</tr>
 							
 								<tr>
-									<td width="300"><label for="responsable">Nom du(des) responsable(s) de l'équipe : </label></td>
-									<td width="450"><input name="responsable" type="text" value="<?php echo $info->responsable ?>" size="50" /></td>
+									<td width="300"><label for="responsable"><?php _e( 'Team manager(s)', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="responsable" type="text" value="<?php echo $info->responsable; ?>" size="50" /></td>
 								</tr>
 								
 								<tr>
-									<td width="300"><label for="telephone">Numéro(s) du(des) responsable(s) de l'équipe : </label></td>
-									<td width="450"><input name="telephone" type="text" value="<?php echo $info->telephone ?>" size="50" /></td>
+									<td width="300"><label for="telephone"><?php _e( 'Tel of the manager(s)', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="telephone" type="text" value="<?php echo $info->telephone; ?>" size="50" /></td>
 								</tr>
 								
 								<tr>
-									<td width="300"><label for="entrainement">Entrainement : </label></td>
-									<td width="450"><input name="entrainement" type="text" value="<?php echo $info->entrainement ?>" size="50" /><br /></td>
+									<td width="300"><label for="entrainement"><?php _e( 'Training', 'convocations' ); ?>:</label></td>
+									<td width="450"><input name="entrainement" type="text" value="<?php echo $info->entrainement; ?>" size="50" /><br /></td>
 								</tr>
 								
 								<tr>

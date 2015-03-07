@@ -34,7 +34,7 @@ if( ! class_exists( 'Joueur' ) ) {
 					)
 				);
 				
-				return true;
+				return $wpdb->insert_id;
 			}
 			else
 			{
@@ -46,7 +46,7 @@ if( ! class_exists( 'Joueur' ) ) {
 			global $wpdb;
 			
 			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$wpdb->update(
+			$results = $wpdb->update(
 				$table_name,
 				array(
 						'nom'		=> $nom,
@@ -58,6 +58,8 @@ if( ! class_exists( 'Joueur' ) ) {
 						'id' => $id
 				)
 			);
+			
+			return $results;
 		}
 		
 		function delete_joueur( $id ){
