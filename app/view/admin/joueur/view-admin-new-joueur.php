@@ -1,50 +1,54 @@
 <?php
-if( !class_exists( 'Joueur_Admin_New_View' ) )
-{
-	class Joueur_Admin_New_View
-	{
+if( !class_exists( 'Joueur_Admin_New_View' ) ) {
+	
+	class Joueur_Admin_New_View {
+		
 		public static function render( $equipes ) {
 			?>
 			<div class="wrap">
-				<h2>
-					<?php _e( 'Add player', 'convocations' ); ?>
-				</h2>
-				<div id="alert"></div>
-				<form action="admin-post.php" method="POST">
-					<table>
+				<h2 id="add-new-player"><?php _e( 'Add a player', 'convocations' ); ?></h2>
+				<?php if( isset( $_GET['message'] ) && $_GET['message'] == 2 ) { ?>
+					<div id="message" class="error below-h2">
+						<p><?php _e( 'Some fields are missing. Please fill in all required fields to create the player.', 'convocations' ); ?></p>
+					</div>
+				<?php } ?>
+				<div id="ajax-response"></div>
+				<p><?php _e( 'Create a new player', 'convocations' ); ?>.</p>
+				<form id="addplayer" class="validate" novalidate="novalidate" name="addplayer" action="admin-post.php" method="POST">
+					<input type="hidden" value="new_joueur" name="action">
+					<table class="form-table">
 						<tbody>
-							<tr>
-								<td width="40%"><label for="nom"><?php _e( 'Name', 'convocations' ); ?>:</label></td>
-								<td width="60%"><input name="nom" type="text" value="" size="50" /></td>
+							<tr class="form-field form-required">
+								<th scope="row"><label for="nom"><?php _e( 'Name', 'convocations' ); ?> <span class="description">(<?php _e( 'required', 'convocations' ); ?>)</span></label></th>
+								<td><input id="nom" type="text" aria-required="true" value="" name="nom"></td>
 							</tr>
 						
-							<tr>
-								<td width="40%"><label for="prenom"><?php _e( 'Firstname', 'convocations' ); ?>:</label></td>
-								<td width="60%"><input name="prenom" type="text" value="" size="50" /></td>
+							<tr class="form-field form-required">
+								<th scope="row"><label for="prenom"><?php _e( 'Firstname', 'convocations' ); ?> <span class="description">(<?php _e( 'required', 'convocations' ); ?>)</span></label></th>
+								<td><input id="prenom" type="text" aria-required="true" value="" name="prenom"></td>
 							</tr>
 							
-							<tr>
-								<td width="40%"><label for="poste"><?php _e( 'Position', 'convocations' ); ?>:</label></td>
-								<td width="60%"><input name="poste" type="text" value="" size="50" /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="poste"><?php _e( 'Position', 'convocations' ); ?>:</label></th>
+								<td><input id="poste" type="text" value="" name="poste"></td>
 							</tr>
 							
-							<td width="40%"><label for="equipe"><?php _e( 'Team', 'convocations' ); ?>:</label></td>
-							<td width="60%">
-								<select name="equipe" id="equipe">
-									<option value=""></option>
-									<?php foreach( $equipes as $equipe ) { ?>
-										<option value="<?php echo $equipe->nom; ?>"><?php echo $equipe->nom; ?></option>
-									<?php } ?>
-									
-								</select>
-							</td>
-							<tr>
-								<td width="600" colspan="2"><input type="submit" value="<?php _e( 'Add', 'convocations' ); ?>" class="button-primary" style="min-width: 80px;" /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="equipe"><?php _e( 'Team', 'convocations' ); ?>:</label></th>
+								<td>
+									<select id="equipe" name="equipe">
+										<option value=""></option>
+										<?php foreach( $equipes as $equipe ) { ?>
+											<option value="<?php echo $equipe->get_nom(); ?>"><?php echo $equipe->get_nom(); ?></option>
+										<?php } ?>
+									</select>
+								</td>
 							</tr>
 						</tbody>
 					</table>
-					<input name="id" type="hidden" value="<?php echo $_GET['id'] ?>" />
-					<input name="action" type="hidden" value="new_joueur" />
+					<p class="submit">
+						<input id="addplayersub" class="button button-primary" type="submit" value="<?php _e( 'Add a player', 'convocations' ); ?>" name="addplayer">
+					</p>
 				</form>
 				</div>
 			<?php

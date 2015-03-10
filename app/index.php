@@ -30,13 +30,22 @@ if( ! class_exists( 'Convocations' ) ) {
 		 *
 		 */
 		public function __construct() {
-			// Load languages
-			// load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
 			
-			// Includes
+			// Load languages
+			load_plugin_textdomain( 'convocations', false, CONVOCATIONS_DIR .'/languages/' );
+			
+			// Includes Controllers
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php' );
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-equipe.php' );
 			require_once( CONVOCATIONS_APP_PATH.'controller/controller-joueur.php' );
+			
+			// Includes controllers
+			require_once( CONVOCATIONS_APP_PATH.'class/class-convocation-manager.php' );
+			require_once( CONVOCATIONS_APP_PATH.'class/class-convocation.php' );
+			require_once( CONVOCATIONS_APP_PATH.'class/class-equipe-manager.php' );
+			require_once( CONVOCATIONS_APP_PATH.'class/class-equipe.php' );
+			require_once( CONVOCATIONS_APP_PATH.'class/class-joueur-manager.php' );
+			require_once( CONVOCATIONS_APP_PATH.'class/class-joueur.php' );
 			
 			// Define table name
 			global $wpdb;
@@ -53,6 +62,8 @@ if( ! class_exists( 'Convocations' ) ) {
 				
 				// Add the administration menu
 				add_action( 'admin_menu', array( &$this,'admin_menu_convocations' ) );
+				
+				add_action('init', array( &$this, 'app_output_buffer' ) );
 			}
 			
 			// Add some js in front
@@ -191,6 +202,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			wp_register_script( 'jquery-ui-timepicker', CONVOCATIONS_LIBS_URL . 'js/jquery-timepicker/jquery.timepicker.min.js' );
 			wp_register_script( 'convocations', CONVOCATIONS_LIBS_URL . 'js/convocations.js' );
 			
+			wp_enqueue_script( 'wp-ajax-response' );
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core', array( 'jquery' ) );
 			wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery', 'jquery-ui-core' ) );
@@ -198,6 +210,7 @@ if( ! class_exists( 'Convocations' ) ) {
 			wp_enqueue_script( 'convocations' );
 			
 			// CSS
+			wp_enqueue_style( 'convocations-css', CONVOCATIONS_LIBS_URL . '/css/convocations.css' );
 			wp_enqueue_style( 'jquery.ui.theme', CONVOCATIONS_LIBS_URL . '/css/jquery-ui-1.8.23.custom.css' );
 			wp_enqueue_style( 'jquery.ui.timepicker', CONVOCATIONS_LIBS_URL . '/css/jquery.timepicker.css' );
 		}
@@ -217,6 +230,10 @@ if( ! class_exists( 'Convocations' ) ) {
 			
 			// Submenu to manage players
 			add_submenu_page( CONVOCATIONS_APP_PATH.'controller/controller-convocation.php', __( 'Players', 'convocations' ), __( 'Players', 'convocations' ), 'manage_convocations',  CONVOCATIONS_APP_PATH.'controller/controller-joueur.php', array( &$this->obj_joueur_controller, 'render' ) );
+		}
+		
+		public function app_output_buffer() {
+			ob_start();
 		}
 		
 		/**

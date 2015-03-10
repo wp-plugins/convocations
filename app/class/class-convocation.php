@@ -2,135 +2,103 @@
 if( ! class_exists( 'Convocation' ) ) {
 	
 	/**
-	 * 
+	 * Class to interact with table Convocations in the database
 	 */
 	class Convocation {
+		
+		private $_id;
+		private $_equipe;
+		private $_equipadv;
+		private $_date;
+		private $_domext;
+		private $_lieurdv;
+		private $_heurerdv;
+		private $_heurematch;
 		
 		/**
 		 * Constructor
 		 */
-		public function __construct() {	
-		}
-		
-		/**
-		 * Insert a new convocation in the database
-		 *
-		 * @param name Name of the convocation
-		 * @return int $wpdb->insert_id ID of the insertion in the database
-		 */
-		public function insert_convocation( $name ) {
-			global $wpdb;
-			
-			$wpdb->insert(
-				CONVOCATIONS_TBL_CONVOCATIONS,
-				array(
-					'equipe' 	=>	$name,
-					'date' 		=>	date_i18n('Y-m-d')
-				)
-			);
-			
-			return $wpdb->insert_id;
-		}
-		
-		/**
-		 * Update a convocation in the database
-		 *
-		 * @param int id			ID of the convocation to update
-		 * @param string equipadv	Name of the opposing team
-		 * @param datetime date		Date of the convocation
-		 * @param string domext		Home/Outside option of the convocation
-		 * @param string lieurdv	Place of the appointment
-		 * @param string heurerdv	Time of the appointment
-		 * @param string heurematch	Time of the game
-		 * @param array arrJoueurs	List of the players selected for the convocation
-		 */
-		public function update_convocation( $id, $equipadv, $date, $domext, $lieurdv, $heurerdv, $heurematch, $arrJoueurs ){
-			global $wpdb;
-			
-			$wpdb->update(
-				CONVOCATIONS_TBL_CONVOCATIONS,
-				array(
-						'equipadv'	=> $equipadv,
-						'date'		=> $date,
-						'domext'	=> $domext,
-						'lieurdv'	=> $lieurdv,
-						'heurerdv'	=> $heurerdv,
-						'heurematch'=> $heurematch
-				),
-				array(
-						'id' => $id
-				)
-			);
-			
-			$wpdb->update(
-				CONVOCATIONS_TBL_PLAYERS,
-				array(
-						'numconvocation'	=> '-1'
-				),
-				array(
-						'numconvocation' => $id
-				)
-			);
-			
-			if(!empty($arrJoueurs)) {
-				foreach ($arrJoueurs as $joueur) {
-					$wpdb->update(
-						CONVOCATIONS_TBL_PLAYERS,
-						array(
-								'numconvocation'	=> $id
-						),
-						array(
-								'id' => $joueur
-						)
-					);
+		public function __construct( array $args ) {
+			foreach( $args as $key => $value ) {
+				$method = 'set_' . $key;
+				if( method_exists( $this, $method ) ) {
+					$this->$method( $value );
 				}
 			}
 		}
 		
-		public function delete_convocation( $the_equipe ){
-			global $wpdb;
-			
-			$sql = $wpdb->prepare(
-								'
-								DELETE 
-								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
-								WHERE equipe = %s
-								',
-								array( $the_equipe )
-					);
-			$wpdb->query($sql);
+		public function get_id() {
+			return $this->_id;
 		}
 		
-		public function get_convocation( $id ){
-			global $wpdb;
-			
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
-								WHERE id = %d
-								',
-								array( $id )
-					);
-			
-			$convocation = $wpdb->get_row($sql);
-			
-			return $convocation;
+		public function get_equipe() {
+			return $this->_equipe;
 		}
 		
-		public function get_all_convocations(){
-			global $wpdb;
+		public function get_equipadv() {
+			return $this->_equipadv;
+		}
+		
+		public function get_date() {
+			return $this->_date;
+		}
+		
+		public function get_domext() {
+			return $this->_domext;
+		}
+		
+		public function get_lieurdv() {
+			return $this->_lieurdv;
+		}
+		
+		public function get_heurerdv() {
+			return $this->_heurerdv;
+		}
+		
+		public function get_heurematch() {
+			return $this->_heurematch;
+		}
+		
+		public function set_id( $id ) {
+			$id = intval($id);
 			
-			$sql = $wpdb->prepare(
-								'SELECT * 
-								FROM ' . CONVOCATIONS_TBL_CONVOCATIONS . ' 
-								ORDER BY equipe ASC', 
-								array()
-					);
-			
-			$all_convocations = $wpdb->get_results($sql);
-			
-			return $all_convocations;
+			if( $id >= 0 ){
+				$this->_id = $id;
+			}
+		}
+		
+		public function set_equipe( $equipe ) {
+			$this->_equipe = sanitize_text_field( $equipe );
+		}
+		
+		public function set_equipadv( $equipeadv ) {
+			$this->_equipadv = sanitize_text_field( $equipeadv );
+		}
+		
+		public function set_date( $date ) {
+			if ( preg_match( "/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date ) ) {
+				$this->_date = $date;
+			}
+		}
+		
+		public function set_domext( $domext ) {
+			$this->_domext = sanitize_text_field( $domext );
+		}
+		
+		public function set_lieurdv( $lieurdv ) {
+			$this->_lieurdv = sanitize_text_field( $lieurdv );
+		}
+		
+		public function set_heurerdv( $heurerdv ) {
+			if ( preg_match( "/^(2[0-3]|[01][0-9]):[0-5][0-9]$/", $heurerdv ) ) {
+				$this->_heurerdv = $heurerdv;
+			}
+		}
+		
+		public function set_heurematch( $heurematch ) {
+			if ( preg_match( "/^(2[0-3]|[01][0-9]):[0-5][0-9]$/", $heurematch ) ) {
+				$this->_heurematch = $heurematch;
+			}
 		}
 	}
 }

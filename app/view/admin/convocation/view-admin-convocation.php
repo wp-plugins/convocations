@@ -32,20 +32,20 @@ if( !class_exists( 'Convocation_Admin_View' ) )
 							<tr <?php if($i%2 == 0){ ?>class="alternate"<?php } ?>>
 								<td class="column-title">
 									<strong>
-										<a class="row-title" title="<?php _e( 'Edit', 'convocations' ); ?> »" href="admin.php?page=convocations/app/controller/controller-convocation.php&id=<?php echo $convocation->id; ?>&action=edit"><?php echo $convocation->equipe; ?></a>
+										<a class="row-title" title="<?php _e( 'Edit', 'convocations' ); ?> »" href="admin.php?page=convocations/app/controller/controller-convocation.php&id=<?php echo $convocation->get_id(); ?>&action=edit"><?php echo $convocation->get_equipe(); ?></a>
 									</strong>
 									<div class="row-actions">
 										<span class="edit">
-											<a title="<?php _e( 'Edit this element', 'convocations' ); ?>" href="admin.php?page=convocations/app/controller/controller-convocation.php&id=<?php echo $convocation->id; ?>&action=edit"><?php _e( 'Edit', 'convocations' ); ?></a>
+											<a title="<?php _e( 'Edit this element', 'convocations' ); ?>" href="admin.php?page=convocations/app/controller/controller-convocation.php&id=<?php echo $convocation->get_id(); ?>&action=edit"><?php _e( 'Edit', 'convocations' ); ?></a>
 										</span>
 									</div>
 								</td>
-								<td><?php echo $convocation->equipadv; ?></td>
-								<td><?php echo $convocation->date; ?></td>
-								<td><?php echo $convocation->domext; ?></td>
-								<td><?php echo $convocation->lieurdv; ?></td>
-								<td><?php echo $convocation->heurerdv; ?></td>
-								<td><?php echo $convocation->heurematch; ?></td>
+								<td><?php echo $convocation->get_equipadv(); ?></td>
+								<td><?php echo $convocation->get_date(); ?></td>
+								<td><?php echo $convocation->get_domext(); ?></td>
+								<td><?php echo $convocation->get_lieurdv(); ?></td>
+								<td><?php echo $convocation->get_heurerdv(); ?></td>
+								<td><?php echo $convocation->get_heurematch(); ?></td>
 							</tr>
 							<?php $i++; ?>
 						<?php } ?>

@@ -3,122 +3,76 @@ if( ! class_exists( 'Joueur' ) ) {
 	
 	class Joueur {
 		
-		public function __construct()
-		{
+		private $_id;
+		private $_nom;
+		private $_prenom;
+		private $_poste;
+		private $_equipe;
+		private $_numconvocation;
 		
-		}
-		
-		function insert_joueur( $nom, $prenom, $poste, $equipe ){
-			global $wpdb;
-			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $table_name . ' 
-								WHERE nom = %s
-								AND prenom = %s
-								',
-								array( $nom, $prenom )
-					);
-			$joueur = $wpdb->get_results($sql);
-			
-			if (count ($joueur) == 0){
-				$wpdb->insert(
-					$table_name,
-					array(
-							'nom' 		=> $nom,
-							'prenom' 	=> $prenom,
-							'poste' 	=> $poste,
-							'equipe' 	=> $equipe
-					)
-				);
-				
-				return $wpdb->insert_id;
-			}
-			else
-			{
-				return false;
+		public function __construct( array $args ) {
+			foreach( $args as $key => $value ) {
+				$method = 'set_' . $key;
+				if( method_exists( $this, $method ) ) {
+					$this->$method( $value );
+				}
 			}
 		}
 		
-		function update_joueur( $id, $nom, $prenom, $poste, $equipe ){
-			global $wpdb;
+		public function set_id( $id ) {
+			$id = intval($id);
 			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$results = $wpdb->update(
-				$table_name,
-				array(
-						'nom'		=> $nom,
-						'prenom'	=> $prenom,
-						'poste'		=> $poste,
-						'equipe'	=> $equipe
-				),
-				array(
-						'id' => $id
-				)
-			);
-			
-			return $results;
+			if( $id >= 0 ) {
+				$this->_id = $id;
+			}
 		}
 		
-		function delete_joueur( $id ){
-			global $wpdb;
-			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								DELETE 
-								FROM ' . $table_name . ' 
-								WHERE id = %d
-								',
-								array( $id )
-					);
-			$wpdb->query($sql);
+		public function set_nom( $nom ) {
+			$this->_nom = sanitize_text_field( $nom );
 		}
 		
-		function get_joueur( $the_joueur_id ){
-			global $wpdb;
-			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $table_name . ' 
-								WHERE id = %d
-								',
-								array( $the_joueur_id )
-					);
-			$joueur = $wpdb->get_results($sql);
-			return $joueur;
+		public function set_prenom( $prenom ) {
+			$this->_prenom = sanitize_text_field( $prenom );
 		}
 		
-		function get_joueurs_by_equipe($the_equipe){
-			global $wpdb;
-			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare(
-								'
-								SELECT * 
-								FROM ' . $table_name . ' 
-								WHERE equipe = %s 
-								ORDER BY nom ASC
-								',
-								array( $the_equipe )
-					);
-			$joueurs_equipe = $wpdb->get_results($sql);
-			
-			return $joueurs_equipe;
+		public function set_poste( $poste ) {
+			$this->_poste = sanitize_text_field( $poste );
 		}
 		
-		function get_all_joueurs(){
-			global $wpdb;
+		public function set_equipe( $equipe ) {
+			$this->_equipe = sanitize_text_field( $equipe );
+		}
+		
+		public function set_numconvocation( $numconvocation ) {
+			$numconvocation = intval($numconvocation);
 			
-			$table_name = $wpdb->prefix . 'convocations_joueurs';
-			$sql = $wpdb->prepare('SELECT * FROM ' . $table_name . ' ORDER BY nom ASC', array());
-			$all_joueurs = $wpdb->get_results($sql);
-			
-			return $all_joueurs;
+			if( $numconvocation >= 0 ) {
+				$this->_numconvocation = $numconvocation;
+			}
+		}
+		
+		public function get_id() {
+			return $this->_id;
+		}
+		
+		public function get_nom() {
+			return $this->_nom;
+		}
+		
+		public function get_prenom() {
+			return $this->_prenom;
+		}
+		
+		public function get_poste() {
+			return $this->_poste;
+		}
+		
+		public function get_equipe() {
+			return $this->_equipe;
+		}
+		
+		public function get_numconvocation() {
+			return $this->_numconvocation;
 		}
 	}
 }

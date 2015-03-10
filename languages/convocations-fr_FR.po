@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Convocations v0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-03-06 23:28:57+0000\n"
+"PO-Revision-Date: 2015-03-10 01:03:37+0000\n"
 "Last-Translator: superadmin <contact@breizh-seo.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,18 +20,19 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: app/index.php:138
+#: app/index.php:223
 #@ convocations
 msgid "Convocations"
 msgstr "Convocations"
 
 #: app/view/admin/convocation/view-admin-edit-convocation.php:10
-#: app/view/admin/equipe/view-admin-edit-equipe.php:10
+#: app/view/admin/equipe/view-admin-edit-equipe.php:15
+#: app/view/admin/joueur/view-admin-edit-joueur.php:15
 #@ convocations
 msgid "Updated"
 msgstr "Mise à jour"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:24
+#: app/view/admin/convocation/view-admin-edit-convocation.php:23
 #@ convocations
 msgid "Edit convocation"
 msgstr "Modifier la convocation"
@@ -77,17 +78,17 @@ msgstr "Domicile"
 msgid "Outside"
 msgstr "Extérieur"
 
-#: app/index.php:139
+#: app/index.php:226
 #@ convocations
 msgid "All convocations"
 msgstr "Toutes les convocations"
 
-#: app/index.php:140
+#: app/index.php:229
 #@ convocations
 msgid "Teams"
 msgstr "Equipes"
 
-#: app/index.php:141
+#: app/index.php:232
 #@ convocations
 msgid "Players"
 msgstr "Joueurs"
@@ -110,12 +111,12 @@ msgstr "ici"
 #: app/view/admin/convocation/view-admin-convocation.php:20
 #: app/view/admin/convocation/view-admin-convocation.php:55
 #: app/view/admin/convocation/view-admin-edit-convocation.php:31
-#: app/view/admin/convocation/view-admin-edit-convocation.php:92
-#: app/view/admin/convocation/view-admin-edit-convocation.php:112
-#: app/view/admin/joueur/view-admin-edit-joueur.php:33
-#: app/view/admin/joueur/view-admin-joueur.php:37
-#: app/view/admin/joueur/view-admin-joueur.php:70
-#: app/view/admin/joueur/view-admin-new-joueur.php:31
+#: app/view/admin/convocation/view-admin-edit-convocation.php:88
+#: app/view/admin/convocation/view-admin-edit-convocation.php:108
+#: app/view/admin/joueur/view-admin-edit-joueur.php:44
+#: app/view/admin/joueur/view-admin-joueur.php:40
+#: app/view/admin/joueur/view-admin-joueur.php:73
+#: app/view/admin/joueur/view-admin-new-joueur.php:37
 #@ convocations
 msgid "Team"
 msgstr "Equipe"
@@ -154,18 +155,17 @@ msgstr "Heure du match"
 
 #: app/view/admin/convocation/view-admin-convocation.php:35
 #: app/view/admin/convocation/view-admin-convocation.php:39
-#: app/view/admin/equipe/view-admin-equipe.php:28
-#: app/view/admin/equipe/view-admin-equipe.php:32
-#: app/view/admin/joueur/view-admin-edit-joueur.php:49
-#: app/view/admin/joueur/view-admin-joueur.php:46
-#: app/view/admin/joueur/view-admin-joueur.php:50
+#: app/view/admin/equipe/view-admin-equipe.php:33
+#: app/view/admin/equipe/view-admin-equipe.php:37
+#: app/view/admin/joueur/view-admin-joueur.php:49
+#: app/view/admin/joueur/view-admin-joueur.php:53
 #@ convocations
 msgid "Edit"
 msgstr "Modifier"
 
 #: app/view/admin/convocation/view-admin-convocation.php:39
-#: app/view/admin/equipe/view-admin-equipe.php:32
-#: app/view/admin/joueur/view-admin-joueur.php:50
+#: app/view/admin/equipe/view-admin-equipe.php:37
+#: app/view/admin/joueur/view-admin-joueur.php:53
 #@ convocations
 msgid "Edit this element"
 msgstr "Modifier cet élément"
@@ -175,122 +175,97 @@ msgstr "Modifier cet élément"
 msgid "Time of the appointment"
 msgstr "Heure du RDV"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:80
-#: app/view/admin/convocation/view-admin-edit-convocation.php:117
+#: app/view/admin/convocation/view-admin-edit-convocation.php:113
 #@ convocations
 msgid "Save"
 msgstr "Mettre à jour"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:85
+#: app/view/admin/convocation/view-admin-edit-convocation.php:81
 #@ convocations
 msgid "Select players"
 msgstr "Sélectionnez des joueurs"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:90
-#: app/view/admin/convocation/view-admin-edit-convocation.php:110
+#: app/view/admin/convocation/view-admin-edit-convocation.php:86
+#: app/view/admin/convocation/view-admin-edit-convocation.php:106
 #@ convocations
 msgid "Select"
 msgstr "Sélection"
 
-#: app/view/admin/convocation/view-admin-edit-convocation.php:91
-#: app/view/admin/convocation/view-admin-edit-convocation.php:111
+#: app/view/admin/convocation/view-admin-edit-convocation.php:87
+#: app/view/admin/convocation/view-admin-edit-convocation.php:107
 #@ convocations
 msgid "Player"
 msgstr "Joueur"
 
-#: app/controller/controller-convocation.php:44
+#: app/controller/controller-convocation.php:73
+#: app/controller/controller-equipe.php:142
+#: app/controller/controller-joueur.php:206
 #@ convocations
 msgid "ID missing"
 msgstr "ID manquant"
 
-#: app/controller/controller-convocation.php:52
-#@ convocations
-msgid "Oppositing team missing"
-msgstr "Equipe adverse manquante"
-
-#: app/controller/controller-convocation.php:60
+#: app/controller/controller-convocation.php:86
 #@ convocations
 msgid "Date missing"
 msgstr "Date manquante"
-
-#: app/controller/controller-convocation.php:68
-#@ convocations
-msgid "Home/Outside missing"
-msgstr "Domicile / Extérieur manquant"
-
-#: app/controller/controller-convocation.php:76
-#@ convocations
-msgid "Place of the appointment missing"
-msgstr "Lieu du RDV manquant"
-
-#: app/controller/controller-convocation.php:84
-#@ convocations
-msgid "Time of the appointment missing"
-msgstr "Heure du RDV manquante"
-
-#: app/controller/controller-convocation.php:92
-#@ convocations
-msgid "Time of the game missing"
-msgstr "Heure du match manquante"
 
 #: app/view/admin/convocation/view-admin-edit-convocation.php:17
 #@ convocations
 msgid "Some fields are missing. Please fill in all fields to update the convocation."
 msgstr "Certains champs sont vides. Merci de remplir tous les champs pour mettre à jour la convocation."
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:25
-#: app/view/admin/equipe/view-admin-equipe.php:16
-#: app/view/admin/equipe/view-admin-equipe.php:49
-#: app/view/admin/equipe/view-admin-new-equipe.php:17
-#: app/view/admin/joueur/view-admin-new-joueur.php:17
+#: app/view/admin/equipe/view-admin-edit-equipe.php:29
+#: app/view/admin/equipe/view-admin-equipe.php:21
+#: app/view/admin/equipe/view-admin-equipe.php:54
+#: app/view/admin/equipe/view-admin-new-equipe.php:23
+#: app/view/admin/joueur/view-admin-new-joueur.php:22
 #@ convocations
 msgid "Name"
 msgstr "Nom"
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:30
-#: app/view/admin/equipe/view-admin-equipe.php:17
-#: app/view/admin/equipe/view-admin-equipe.php:50
-#: app/view/admin/equipe/view-admin-new-equipe.php:22
+#: app/view/admin/equipe/view-admin-edit-equipe.php:34
+#: app/view/admin/equipe/view-admin-equipe.php:22
+#: app/view/admin/equipe/view-admin-equipe.php:55
+#: app/view/admin/equipe/view-admin-new-equipe.php:28
 #@ convocations
 msgid "Team manager(s)"
 msgstr "Responsable(s) d'équipe"
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:35
-#: app/view/admin/equipe/view-admin-equipe.php:18
-#: app/view/admin/equipe/view-admin-equipe.php:51
-#: app/view/admin/equipe/view-admin-new-equipe.php:27
+#: app/view/admin/equipe/view-admin-edit-equipe.php:39
+#: app/view/admin/equipe/view-admin-equipe.php:23
+#: app/view/admin/equipe/view-admin-equipe.php:56
+#: app/view/admin/equipe/view-admin-new-equipe.php:33
 #@ convocations
 msgid "Tel of the manager(s)"
 msgstr "Téléphone du(des) responsable(s) d'équipe"
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:40
-#: app/view/admin/equipe/view-admin-equipe.php:19
-#: app/view/admin/equipe/view-admin-equipe.php:52
-#: app/view/admin/equipe/view-admin-new-equipe.php:32
+#: app/view/admin/equipe/view-admin-edit-equipe.php:44
+#: app/view/admin/equipe/view-admin-equipe.php:24
+#: app/view/admin/equipe/view-admin-equipe.php:57
+#: app/view/admin/equipe/view-admin-new-equipe.php:38
 #@ convocations
 msgid "Training"
 msgstr "Entrainement"
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:18
+#: app/view/admin/equipe/view-admin-edit-equipe.php:11
 #: app/view/admin/equipe/view-admin-equipe.php:11
-#: app/view/admin/equipe/view-admin-new-equipe.php:37
 #: app/view/admin/joueur/view-admin-edit-joueur.php:11
-#: app/view/admin/joueur/view-admin-new-joueur.php:42
+#: app/view/admin/joueur/view-admin-joueur.php:11
 #@ convocations
 msgid "Add"
 msgstr "Ajouter"
 
-#: app/index.php:102
+#: app/index.php:157
 #@ convocations
 msgid "Team manager"
 msgstr "Responsable d'équipe"
 
-#: app/view/admin/equipe/view-admin-edit-equipe.php:17
+#: app/view/admin/equipe/view-admin-edit-equipe.php:10
 #@ convocations
 msgid "Edit team"
 msgstr "Editer l'équipe"
 
-#: app/view/admin/equipe/view-admin-new-equipe.php:10
+#: app/view/admin/equipe/view-admin-new-equipe.php:9
 #@ convocations
 msgid "Add team"
 msgstr "Ajouter une équipe"
@@ -300,8 +275,8 @@ msgstr "Ajouter une équipe"
 msgid "Manage teams"
 msgstr "Gestion des équipes"
 
-#: app/view/admin/equipe/view-admin-equipe.php:36
-#: app/view/admin/joueur/view-admin-joueur.php:54
+#: app/view/admin/equipe/view-admin-equipe.php:41
+#: app/view/admin/joueur/view-admin-joueur.php:57
 #@ convocations
 msgid "Delete"
 msgstr "Supprimer définitivement"
@@ -311,41 +286,122 @@ msgstr "Supprimer définitivement"
 msgid "Manage players"
 msgstr "Gestion des joueurs"
 
-#: app/view/admin/joueur/view-admin-joueur.php:17
+#: app/view/admin/joueur/view-admin-joueur.php:22
 #@ convocations
 msgid "All the teams"
 msgstr "Toutes les équipes"
 
-#: app/view/admin/joueur/view-admin-edit-joueur.php:19
-#: app/view/admin/joueur/view-admin-joueur.php:34
-#: app/view/admin/joueur/view-admin-joueur.php:67
+#: app/view/admin/joueur/view-admin-edit-joueur.php:29
+#: app/view/admin/joueur/view-admin-joueur.php:37
+#: app/view/admin/joueur/view-admin-joueur.php:70
 #@ convocations
 msgid "Lastname"
 msgstr "Nom"
 
-#: app/view/admin/joueur/view-admin-edit-joueur.php:24
-#: app/view/admin/joueur/view-admin-joueur.php:35
-#: app/view/admin/joueur/view-admin-joueur.php:68
-#: app/view/admin/joueur/view-admin-new-joueur.php:22
+#: app/view/admin/joueur/view-admin-edit-joueur.php:34
+#: app/view/admin/joueur/view-admin-joueur.php:38
+#: app/view/admin/joueur/view-admin-joueur.php:71
+#: app/view/admin/joueur/view-admin-new-joueur.php:27
 #@ convocations
 msgid "Firstname"
 msgstr "Prénom"
 
-#: app/view/admin/joueur/view-admin-edit-joueur.php:29
-#: app/view/admin/joueur/view-admin-joueur.php:36
-#: app/view/admin/joueur/view-admin-joueur.php:69
-#: app/view/admin/joueur/view-admin-new-joueur.php:27
+#: app/view/admin/joueur/view-admin-edit-joueur.php:39
+#: app/view/admin/joueur/view-admin-joueur.php:39
+#: app/view/admin/joueur/view-admin-joueur.php:72
+#: app/view/admin/joueur/view-admin-new-joueur.php:32
 #@ convocations
 msgid "Position"
 msgstr "Poste"
 
-#: app/view/admin/joueur/view-admin-edit-joueur.php:10
+#: app/controller/controller-equipe.php:84
+#: app/controller/controller-equipe.php:150
+#: app/controller/controller-joueur.php:137
+#: app/controller/controller-joueur.php:214
 #@ convocations
-msgid "Edit player"
+msgid "Name missing"
+msgstr "Nom manquant"
+
+#: app/controller/controller-joueur.php:145
+#: app/controller/controller-joueur.php:222
+#@ convocations
+msgid "Firstname missing"
+msgstr "Prénom manquant"
+
+#: app/view/admin/joueur/view-admin-new-joueur.php:16
+#@ convocations
+msgid "Create a new player"
+msgstr "Créer un nouveau joueur"
+
+#: app/view/admin/equipe/view-admin-edit-equipe.php:29
+#: app/view/admin/equipe/view-admin-new-equipe.php:23
+#: app/view/admin/joueur/view-admin-edit-joueur.php:29
+#: app/view/admin/joueur/view-admin-edit-joueur.php:34
+#: app/view/admin/joueur/view-admin-new-joueur.php:22
+#: app/view/admin/joueur/view-admin-new-joueur.php:27
+#@ convocations
+msgid "required"
+msgstr "obligatoire"
+
+#: app/view/admin/joueur/view-admin-new-joueur.php:9
+#: app/view/admin/joueur/view-admin-new-joueur.php:50
+#@ convocations
+msgid "Add a player"
+msgstr "Ajouter un joueur"
+
+#: app/view/admin/joueur/view-admin-edit-joueur.php:10
+#: app/view/admin/joueur/view-admin-edit-joueur.php:62
+#@ convocations
+msgid "Edit the player"
 msgstr "Modifier le joueur"
 
-#: app/view/admin/joueur/view-admin-new-joueur.php:10
+#: app/view/admin/joueur/view-admin-joueur.php:15
 #@ convocations
-msgid "Add player"
-msgstr "Ajouter un joueur"
+msgid "The player has been deleted."
+msgstr "Joueur définitivement supprimé."
+
+#: app/view/admin/equipe/view-admin-edit-equipe.php:50
+#@ convocations
+msgid "Edit the team"
+msgstr "Modifier l'équipe"
+
+#: app/view/admin/equipe/view-admin-new-equipe.php:17
+#@ convocations
+msgid "Create a new team"
+msgstr "Créer une nouvelle équipe"
+
+#: app/view/admin/equipe/view-admin-new-equipe.php:44
+#@ convocations
+msgid "Add a team"
+msgstr "Ajouter l'équipe"
+
+#: app/view/admin/joueur/view-admin-joueur.php:31
+#@ convocations
+msgid "Filter"
+msgstr "Filtrer"
+
+#: app/view/admin/equipe/view-admin-edit-equipe.php:19
+#@ convocations
+msgid "Some fields are missing. Please fill in all required fields to update the team."
+msgstr "Certains champs sont manquants. Merci de remplir tous les champs obligatoire pour mettre à jour l'équipe."
+
+#: app/view/admin/joueur/view-admin-new-joueur.php:12
+#@ convocations
+msgid "Some fields are missing. Please fill in all required fields to create the player."
+msgstr "Certains champs sont manquants. Merci de remplir tous les champs obligatoire pour créer le joueur."
+
+#: app/view/admin/joueur/view-admin-edit-joueur.php:19
+#@ convocations
+msgid "Some fields are missing. Please fill in all required fields to update the player."
+msgstr "Certains champs sont manquants. Merci de remplir tous les champs obligatoire pour mettre à jour le joueur."
+
+#: app/view/admin/equipe/view-admin-new-equipe.php:12
+#@ convocations
+msgid "Some fields are missing. Please fill in all required fields to create the team."
+msgstr "Certains champs sont manquants. Merci de remplir tous les champs obligatoire pour créer l'équipe."
+
+#: app/view/admin/equipe/view-admin-equipe.php:15
+#@ convocations
+msgid "The team has been deleted."
+msgstr "Equipe définitivement supprimée."
 

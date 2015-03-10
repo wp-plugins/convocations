@@ -1,0 +1,10 @@
+#editconvocation .form-field input,
+#addplayer .form-field input,
+#editplayer .form-field input,
+#addteam .form-field input,
+#editteam .form-field input{
+    width: 25em;
+}
+#editconvocation .form-field input[type="time"]{
+	width: 6.2em;
+}

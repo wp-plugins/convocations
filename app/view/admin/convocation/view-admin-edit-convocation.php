@@ -20,43 +20,44 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) ) {
 			}
 			?>
 			<div class="wrap">
-				<h2>
-					<?php _e( 'Edit convocation', 'convocations' ); ?>
-				</h2>
-				<form action="admin-post.php" method="POST">
-					<table>
+				<h2><?php _e( 'Edit convocation', 'convocations' ); ?></h2>
+				<div id="ajax-response"></div>
+				<form id="editconvocation" class="validate" novalidate="novalidate" name="editconvocation" action="admin-post.php" method="POST">
+					<input type="hidden" value="<?php echo $convocation->get_id(); ?>" name="id">
+					<input type="hidden" value="edit_convocation" name="action">
+					<table class="form-table">
 						<tbody>
-							<tr>
-								<td width="300"><label for="nom"><?php _e( 'Team', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="nom" type="text" value="<?php echo $convocation->equipe; ?>" size="50" disabled/><span style="font-style: italic; ">&nbsp;(<?php _e( 'To change it, change the team name', 'convocations' ); ?>)</span></td>
+							<tr class="form-field">
+								<th scope="row"><label for="nom"><?php _e( 'Team', 'convocations' ); ?>:</label></td>
+								<td><input id="nom" type="text" value="<?php echo $convocation->get_equipe(); ?>" name="nom" disabled="disabled"><span class="description">(<?php _e( 'To change it, change the team name', 'convocations' ); ?>)</span></td>
 							</tr>
 						
-							<tr>
-								<td width="300"><label for="equipadv"><?php _e( 'Opposing team', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="equipadv" type="text" value="<?php echo $convocation->equipadv; ?>" size="50" /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="equipadv"><?php _e( 'Opposing team', 'convocations' ); ?>:</label></td>
+								<td><input id="equipeadv" type="text" name="equipadv" type="text" value="<?php echo $convocation->get_equipadv(); ?>" size="50" /></td>
 							</tr>
 							
-							<tr>
-								<td width="300"><label for="date"><?php _e( 'Date', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="date" id="datepicker" type="text" value="<?php echo $convocation->date; ?>" size="50" /><span style="font-style: italic; ">&nbsp;(<?php _e( 'Format : Year-Month-Day', 'convocations' ); ?>)</span></td>
+							<tr class="form-field">
+								<th scope="row"><label for="date"><?php _e( 'Date', 'convocations' ); ?>:</label></td>
+								<td><input id="datepicker" type="text" value="<?php echo $convocation->get_date(); ?>" name="date"><span class="description">(<?php _e( 'Format : Year-Month-Day', 'convocations' ); ?>)</span></td>
 							</tr>
 							
-							<tr>
-								<td width="300"><label for="lieurdv"><?php _e( 'Place of appointment', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="lieurdv" type="text" value="<?php echo $convocation->lieurdv; ?>" size="50" /><br /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="lieurdv"><?php _e( 'Place of appointment', 'convocations' ); ?>:</label></td>
+								<td><input id="lieurdv" type="text" value="<?php echo $convocation->get_lieurdv(); ?>" name="lieurdv"></td>
 							</tr>
 							
-							<tr>
-								<td width="300"><label for="domext"><?php _e( 'Home / Outside', 'convocations' ); ?>:</label></td>
-								<td width="450">
-									<select name="domext" id="domext">
+							<tr class="form-field">
+								<th scope="row"><label for="domext"><?php _e( 'Home / Outside', 'convocations' ); ?>:</label></td>
+								<td>
+									<select id="domext" name="domext">
 										<option value=""></option>
-										<?php if ($convocation->domext == "Domicile") { ?>
-											<option value="Domicile" selected><?php _e( 'Home', 'convocations' ); ?></option>
+										<?php if ($convocation->get_domext() == "Domicile") { ?>
+											<option value="Domicile" selected="selected"><?php _e( 'Home', 'convocations' ); ?></option>
 											<option value="Extérieur"><?php _e( 'Outside', 'convocations' ); ?></option>
-										<?php } elseif ($convocation->domext == "Extérieur") { ?>
+										<?php } elseif ($convocation->get_domext() == "Extérieur") { ?>
 											<option value="Domicile"><?php _e( 'Home', 'convocations' ); ?></option>
-											<option value="Extérieur" selected><?php _e( 'Outside', 'convocations' ); ?></option>
+											<option value="Extérieur" selected="selected""><?php _e( 'Outside', 'convocations' ); ?></option>
 										<?php } else { ?>
 											<option value="Domicile"><?php _e( 'Home', 'convocations' ); ?></option>
 											<option value="Extérieur"><?php _e( 'Outside', 'convocations' ); ?></option>
@@ -65,14 +66,14 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) ) {
 								</td>
 							</tr>
 							
-							<tr>
-								<td width="300"><label for="heurerdv"><?php _e( 'Time of the appointment', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="heurerdv" id="heurerdv" type="text" value="<?php echo $convocation->heurerdv; ?>" size="8" /><br /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="heurerdv"><?php _e( 'Time of the appointment', 'convocations' ); ?>:</label></td>
+								<td><input id="heurerdv" type="time" value="<?php echo $convocation->get_heurerdv(); ?>" name="heurerdv"></td>
 							</tr>
 							
-							<tr>
-								<td width="300"><label for="heurematch"><?php _e( 'Time of the game', 'convocations' ); ?>:</label></td>
-								<td width="450"><input name="heurematch" id="heuremacth" type="text" value="<?php echo $convocation->heurematch; ?>" size="8" /><br /></td>
+							<tr class="form-field">
+								<th scope="row"><label for="heurematch"><?php _e( 'Time of the game', 'convocations' ); ?>:</label></td>
+								<td><input id="heuremacth" type="time" value="<?php echo $convocation->get_heurematch(); ?>" name="heurematch"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -81,7 +82,7 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) ) {
 					</h3>
 					<table class="wp-list-table widefat fixed" cellspacing="0">
 						<thead>
-							<tr>
+							<tr class="form-field">
 								<th class="manage-column" width="20%"><?php _e( 'Select', 'convocations' ); ?></th>
 								<th class="manage-column" width="40%"><?php _e( 'Player', 'convocations' ); ?></th>
 								<th class="manage-column" width="40%"><?php _e( 'Team', 'convocations' ); ?></th>
@@ -90,28 +91,27 @@ if( !class_exists( 'Convocation_Admin_Edit_View' ) ) {
 						<tbody>
 							<?php foreach ($joueurs as $joueur) { ?>
 								<tr>
-								<?php if ($joueur->numconvocation == $_GET['id']) { ?>
-									<td><input name="selectionnes[]" type="checkbox"  value="<?php echo $joueur->id; ?>" checked="checked" /></td>
+								<?php if ($joueur->get_numconvocation() == $_GET['id']) { ?>
+									<td><input name="selectionnes[]" type="checkbox"  value="<?php echo $joueur->get_id(); ?>" checked="checked" /></td>
 								<?php } else { ?>
-									<td><input name="selectionnes[]" type="checkbox"  value="<?php echo $joueur->id; ?>" /></td>
+									<td><input name="selectionnes[]" type="checkbox"  value="<?php echo $joueur->get_id(); ?>" /></td>
 								<?php } ?>
-									<td><?php echo $joueur->nom; ?> <?php echo $joueur->prenom; ?></td>
-									<td><?php echo $joueur->equipe; ?></td>
+									<td><?php echo $joueur->get_nom(); ?> <?php echo $joueur->get_prenom(); ?></td>
+									<td><?php echo $joueur->get_equipe(); ?></td>
 								</tr>
 							<?php } ?>
 						</tbody>
 						<tfoot>
-							<tr>
+							<tr class="form-field">
 								<th class="manage-column" width="20%"><?php _e( 'Select', 'convocations' ); ?></th>
 								<th class="manage-column" width="40%"><?php _e( 'Player', 'convocations' ); ?></th>
 								<th class="manage-column" width="40%"><?php _e( 'Team', 'convocations' ); ?></th>
 							</tr>
 						</tfoot>
 					</table>
-					<br />
+					
 					<input type="submit" value="<?php _e( 'Save', 'convocations' ); ?>" class="button-primary" style="min-width: 80px;" />
-					<input name="id" type="hidden" value="<?php echo $_GET['id']; ?>" />
-					<input name="action" type="hidden" value="edit_convocation" />
+					
 				</form>
 			</div>
 			<?php

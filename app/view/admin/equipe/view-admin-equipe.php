@@ -10,6 +10,11 @@ if( !class_exists( 'Equipe_Admin_View' ) )
 					<?php _e( 'Manage teams', 'convocations' ); ?>
 					<a class="add-new-h2" href="admin.php?page=convocations/app/controller/controller-equipe.php&action=new"><?php _e( 'Add', 'convocations' ); ?></a>
 				</h2>
+				<?php if( isset( $_GET['deleted'] ) && $_GET['deleted'] == 1 ) { ?>
+					<div id="message" class="updated below-h2">
+						<p><?php _e( 'The team has been deleted.', 'convocations' ) ?></p>
+					</div>
+				<?php } ?>
 				<table class="wp-list-table widefat fixed" cellspacing="0">
 					<thead>
 						<tr>
@@ -25,21 +30,21 @@ if( !class_exists( 'Equipe_Admin_View' ) )
 							<tr <?php if($i%2 == 0){ ?>class="alternate"<?php } ?>>
 								<td>
 									<strong>
-										<a class="row-title" title="<?php _e( 'Edit', 'convocations' ); ?> »" href="admin.php?page=convocations/app/controller/controller-equipe.php&id=<?php echo $equipe->id; ?>&action=edit"><?php echo $equipe->nom; ?></a>
+										<a class="row-title" title="<?php _e( 'Edit', 'convocations' ); ?> »" href="admin.php?page=convocations/app/controller/controller-equipe.php&id=<?php echo $equipe->get_id(); ?>&action=edit"><?php echo $equipe->get_nom(); ?></a>
 									</strong>
 									<div class="row-actions">
 										<span class="edit">
-											<a title="<?php _e( 'Edit this element', 'convocations' ); ?>" href="admin.php?page=convocations/app/controller/controller-equipe.php&id=<?php echo $equipe->id; ?>&action=edit"><?php _e( 'Edit', 'convocations' ); ?></a>
+											<a title="<?php _e( 'Edit this element', 'convocations' ); ?>" href="admin.php?page=convocations/app/controller/controller-equipe.php&id=<?php echo $equipe->get_id(); ?>&action=edit"><?php _e( 'Edit', 'convocations' ); ?></a>
 											|
 										</span>
 										<span class="delete">
-											<a class="submitdelete" href="admin.php?page=convocations/app/controller/controller-equipe.php&action=delete&id=<?php echo $equipe->id; ?>&equipe=<?php echo $equipe->nom; ?>" onclick="return showNotice.warn();"><?php _e( 'Delete', 'convocations' ); ?></a>
+											<a class="submitdelete" href="admin.php?page=convocations/app/controller/controller-equipe.php&action=delete&id=<?php echo $equipe->get_id(); ?>&equipe=<?php echo $equipe->get_nom(); ?>" onclick="return showNotice.warn();"><?php _e( 'Delete', 'convocations' ); ?></a>
 										</span>
 									</div>
 								</td>
-								<td><?php echo $equipe->responsable; ?></td>
-								<td><?php echo $equipe->telephone; ?></td>
-								<td><?php echo $equipe->entrainement; ?></td>
+								<td><?php echo $equipe->get_responsable(); ?></td>
+								<td><?php echo $equipe->get_telephone(); ?></td>
+								<td><?php echo $equipe->get_entrainement(); ?></td>
 							</tr>
 							<?php $i++; ?>
 						<?php }  ?>
