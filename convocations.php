@@ -20,4 +20,4 @@ define( 'CONVOCATIONS_LIBS_PATH', CONVOCATIONS_PATH. 'libs/' );
 define('CONVOCATIONS_URL', plugin_dir_url( __FILE__ ));
 define('CONVOCATIONS_LIBS_URL', CONVOCATIONS_URL .'libs/');
 
-require_once( 'app/index.php' );
+require_once( 'class-convocations.php' );
